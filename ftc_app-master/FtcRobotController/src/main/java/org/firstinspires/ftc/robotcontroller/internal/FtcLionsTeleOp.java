@@ -77,8 +77,8 @@ public class FTCLionsTeleOp extends OpMode {
         rightBack.setPower(gamepad1.right_stick_y / 1.4);
 
         while (gamepad1.right_trigger != 0) { //right side of robot
-            rightFront.setPower(-gamepad1.right_trigger / (2 - .7)); //assuming that the right side is backwards
-            rightBack.setPower(gamepad1.right_trigger / (2 - .7));
+            rightFront.setPower(-gamepad1.right_trigger / (2 + .7)); //assuming that the right side is backwards
+            rightBack.setPower(gamepad1.right_trigger / (2 + .7));
             leftFront.setPower(gamepad1.right_trigger / (2 + 0));
             leftBack.setPower(-gamepad1.right_trigger / (2 + 0));
 
@@ -86,11 +86,9 @@ public class FTCLionsTeleOp extends OpMode {
         while (gamepad1.left_trigger != 0) { //left side of the robot
             rightFront.setPower(gamepad1.left_trigger / (2 + 0)); //assuming that the right side is backwards
             rightBack.setPower(-gamepad1.left_trigger / (2 + 0));
-            leftFront.setPower(-gamepad1.left_trigger / (2 - .7));
-            leftBack.setPower(gamepad1.left_trigger / (2 - .7)); //.7 for the general power per side and .8 for the wheels moving forward
+            leftFront.setPower(-gamepad1.left_trigger / (2 + .7));
+            leftBack.setPower(gamepad1.left_trigger / (2 + .7)); //.7 for the general power per side and .8 for the wheels moving forward
         }
-
-
 
 
         ////////////////////////////////
@@ -100,7 +98,7 @@ public class FTCLionsTeleOp extends OpMode {
 
 
 
-        // E-STOP
+        // E-STOP \\
         if (gamepad1.left_bumper && gamepad1.right_bumper && gamepad2.left_bumper && gamepad2.right_bumper) { //mash those bumpers
             leftFront.setPower(0);
             leftBack.setPower(0);

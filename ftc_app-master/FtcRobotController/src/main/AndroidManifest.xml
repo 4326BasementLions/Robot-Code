@@ -36,5 +36,10 @@
       android:enabled="true" />
 
   </application>
+  <uses-permission android:name="android.permission.CAMERA" /> //camera
+
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-feature android:name="android.hardware.camera.front" />
+  //camera
 
 </manifest>
