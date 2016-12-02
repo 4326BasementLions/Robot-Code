@@ -18,6 +18,9 @@ import android.util.Log;
  * <p>
  *Enables control of the robot via the gamepad
  */
+
+@Autonomous(name="Autonomous", group="Autonomous")
+
 public class CameraOp extends OpMode {
     private Camera camera;
     public CameraPreview preview;
@@ -61,6 +64,24 @@ public class CameraOp extends OpMode {
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
      */
+
+    public void start() {
+        leftFront = hardwareMap.dcMotor.get("leftFront");
+        leftBack = hardwareMap.dcMotor.get("leftBack");
+        rightFront = hardwareMap.dcMotor.get("rightFront");
+        rightBack = hardwareMap.dcMotor.get("rightBack");
+
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    DcMotor leftBack;
+    DcMotor leftFront;
+    DcMotor rightFront;
+    DcMotor rightBack;
+
     @Override
     public void init() {
         camera = ((FtcRobotControllerActivity)hardwareMap.appContext).camera;
@@ -118,5 +139,31 @@ public class CameraOp extends OpMode {
         }
         telemetry.addData("Looped","Looped " + Integer.toString(looped) + " times");
         Log.d("DEBUG:",data);
+    }
+
+    //Drive Methods
+    public void driveForward (int position) {
+        leftFront.setTargetPosition(position);
+        rightFront.setTargetPosition(position);
+        leftBack.setTargetPosition(position);
+        rightBack.setTargetPosition(position);
+    }
+    public void drivePower (double power) { //try 50 for first refrence
+        leftFront.setPower(power / 2);
+        rightFront.setPower(power / 2);
+        leftBack.setPower(power / 2);
+        rightBack.setPower(power / 2);
+    }
+    public void driveRight (int position) {
+        rightFront.setTargetPosition(-position / (2 + .7)); //assuming that the right side is backwards
+        rightBack.setTargetPosition(position / (2 + .7));
+        leftFront.setTargetPosition(position / (2 + 0));
+        leftBack.setTargetPosition(-position / (2 + 0));
+    }
+    public void driveLeft (int position) {
+        rightFront.setPower(position / (2 + 0)); //assuming that the right side is backwards
+        rightBack.setPower(-position / (2 + 0));
+        leftFront.setPower(-position / (2 + .7));
+        leftBack.setPower(position / (2 + .7)); //.7 for the general power per side and .8 for the wheels moving forward
     }
 }
