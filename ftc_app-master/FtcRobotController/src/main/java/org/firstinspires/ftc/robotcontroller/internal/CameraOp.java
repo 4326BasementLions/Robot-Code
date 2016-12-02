@@ -110,35 +110,7 @@ public class CameraOp extends OpMode {
 
     @Override
     public void loop() {
-        if (yuvImage != null) {
-            int redValue = 0;
-            int blueValue = 0;
-            int greenValue = 0;
-            convertImage();
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    int pixel = image.getPixel(x, y);
-                    redValue += red(pixel);
-                    blueValue += blue(pixel);
-                    greenValue += green(pixel);
-                }
-            }
-            int color = highestColor(redValue, greenValue, blueValue);
-            String colorString = "";
-            switch (color) {
-                case 0:
-                    colorString = "RED";
-                    break;
-                case 1:
-                    colorString = "GREEN";
-                    break;
-                case 2:
-                    colorString = "BLUE";
-            }
-            telemetry.addData("Color:", "Color detected is: " + colorString);
-        }
-        telemetry.addData("Looped","Looped " + Integer.toString(looped) + " times");
-        Log.d("DEBUG:",data);
+
     }
 
     //Drive Methods
@@ -154,6 +126,7 @@ public class CameraOp extends OpMode {
         leftBack.setPower(power / 2);
         rightBack.setPower(power / 2);
     }
+
     public void driveRight (int position) {
         rightFront.setTargetPosition(-position / (2 + .7)); //assuming that the right side is backwards
         rightBack.setTargetPosition(position / (2 + .7));
@@ -165,5 +138,37 @@ public class CameraOp extends OpMode {
         rightBack.setPower(-position / (2 + 0));
         leftFront.setPower(-position / (2 + .7));
         leftBack.setPower(position / (2 + .7)); //.7 for the general power per side and .8 for the wheels moving forward
+    }
+
+    public scanColor(String colorString) {
+        if (yuvImage != null) {
+            int redValue = 0;
+            int blueValue = 0;
+            int greenValue = 0;
+            convertImage();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    int pixel = image.getPixel(x, y);
+                    redValue += red(pixel);
+                    blueValue += blue(pixel);
+                    greenValue += green(pixel);
+                }
+            }
+            int color = highestColor(redValue, greenValue, blueValue);
+            colorString = "";
+            switch (color) {
+                case 0:
+                    colorString = "RED";
+                    break;
+                case 1:
+                    colorString = "GREEN";
+                    break;
+                case 2:
+                    colorString = "BLUE";
+            }
+            telemetry.addData("Color:", "Color detected is: " + colorString);
+        }
+        telemetry.addData("Looped","Looped " + Integer.toString(looped) + " times");
+        Log.d("DEBUG:",data);
     }
 }
