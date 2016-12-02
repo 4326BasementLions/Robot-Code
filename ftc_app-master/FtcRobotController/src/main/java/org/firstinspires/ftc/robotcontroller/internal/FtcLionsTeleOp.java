@@ -120,9 +120,8 @@ public class FTCLionsTeleOp extends OpMode {
     public void loop() {
         if (DEBUG) {
             // TELEMETRY FOR JOYSTICK DEBUGGING
-//            telemetry.addData(gamepad1.left_stick_y);
-//            telemetry.addData("Gamepad1 Movement: y", gamepad1.right_stick_y, ", x", gamepad1.right_stick_x);
-//            telemetry.addData("Gamepad2 Movement: y", gamepad2.right_stick_y, ", x", gamepad2.right_stick_x);
+              telemetry.addData("Text:", "Gamepad1 Movement y: " + gamepad1.left_stick_y + ", " + gamepad1.right_stick_y);
+            telemetry.addData("Text:", "Gamepad1 Movement x: " + gamepad1.left_trigger + ", " + gamepad1.right_trigger);
         }
 
         if (yuvImage != null) {  //color sensor output and value swaps

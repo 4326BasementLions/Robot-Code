@@ -3,13 +3,13 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../Zaki-Code/gen" />
-        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../../Zaki-Code/gen" />
-        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../../Zaki-Code/AndroidManifest.xml" />
-        <option name="RES_FOLDER_RELATIVE_PATH" value="/../../Zaki-Code/res" />
-        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../Zaki-Code/assets" />
-        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../../Zaki-Code/libs" />
-        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../../Zaki-Code/proguard_logs" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../gen" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../ftc_app-master/FtcRobotController/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/../ftc_app-master/FtcRobotController/src/main/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../ftc_app-master/FtcRobotController/src/main/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../ftc_app-master/libs" />
+        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../proguard_logs" />
       </configuration>
     </facet>
   </component>
