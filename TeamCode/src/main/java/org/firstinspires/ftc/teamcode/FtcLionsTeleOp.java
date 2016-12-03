@@ -40,8 +40,11 @@ public class FtcLionsTeleOp extends OpMode {
     DcMotor shooter1;
     DcMotor shooter2;
     Servo button;
-    
-    
+
+    DcMotor lifter;
+    boolean limiter = false; //as a random boolean until further notice
+    Servo holder;
+    boolean holderTrue = false;
 
     public FtcLionsTeleOp() {
 
@@ -72,10 +75,23 @@ public class FtcLionsTeleOp extends OpMode {
         shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         
         button.scaleRange(0, 1);
+
+        lifter = hardwareMap.dcMotor.get("lifter");
+        lifter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        holder = hardwareMap.servo.get("holder");
+        holder.scaleRange(0, 1);
     }
 
     @Override
     public void init() {
+    }
+
+    public void wait(int time){
+        try{
+            Thread.sleep(time * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -116,6 +132,26 @@ public class FtcLionsTeleOp extends OpMode {
         //     GAMEPAD 2 CONTROLS     //
         ////////////////////////////////
 
+        while(gamepad2.a) {
+            button.setPosition(1);
+        }
+        while(gamepad2.right_bumper) {
+            shooter1.setPower(1);
+            shooter2.setPower(-1);
+        }
+        while(gamepad2.left_bumber) {
+            scooper.setPower(1);
+        }
+
+        if(gamepad2.right_trigger != 0 && limiter == false && holderTrue == true) {
+            lifter.setPower(gamepad2.right_trigger);
+        }
+        if(gamepad2.x && holderTrue == false) {
+            holderTrue == true;
+            holder.setPosition(1);
+            wait(2);
+            holder.scaleRange(0, 1); //sets current pos to default till further notice
+        }
 
 
 
@@ -125,6 +161,11 @@ public class FtcLionsTeleOp extends OpMode {
             leftBack.setPower(0);
             rightFront.setPower(0);
             rightBack.setPower(0);
+
+            shooter1.setPower(0);
+            shooter2.setPower(0);
+            scooper.setPower(0);
+            button.setPosition(0);
         }
     }
 
