@@ -44,7 +44,7 @@ public class FtcLionsTeleOp extends OpMode {
     DcMotor lifter;
     boolean limiter = false; //as a random boolean until further notice
     Servo holder;
-    boolean holderTrue = false;
+    boolean holderTrue = true; //true = is holding the arm
 
     public FtcLionsTeleOp() {
 
@@ -143,13 +143,17 @@ public class FtcLionsTeleOp extends OpMode {
             scooper.setPower(1);
         }
 
-        if(gamepad2.right_trigger != 0 && limiter == false && holderTrue == true) {
-            lifter.setPower(gamepad2.right_trigger);
+        while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) {
+            lifter.setPower(gamepad2.right_stick_y);
         }
-        if(gamepad2.x && holderTrue == false) {
-            holderTrue == true;
+        while(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
+            lifter.setPower(gamepad2.right_stick_y);
+        }
+
+        if(gamepad2.x && holderTrue == true) {
+            holderTrue = false;
             holder.setPosition(1);
-            wait(2);
+            wait(1.5);
             holder.scaleRange(0, 1); //sets current pos to default till further notice
         }
 
