@@ -105,6 +105,12 @@ public void start {
         button.setPosition(position);
         button.setPosition(1 - position);
     }
+      public void drivePower (double power) {
+        leftFront.setPower(power / 2);
+        rightFront.setPower(power / 2);
+        leftBack.setPower(power / 2);
+        rightBack.setPower(power / 2);        
+    }
       public void stopRobot() {
         leftFront.setPower(0);
         rightFront.setPower(0);
