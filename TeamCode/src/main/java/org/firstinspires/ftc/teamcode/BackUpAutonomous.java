@@ -34,7 +34,7 @@ public class BackUpAutonomous extends OpMode {
       scoop(10);
       shoot(10);
       
-     
+     stopRobot();
     }
 
  double startPos=0;
