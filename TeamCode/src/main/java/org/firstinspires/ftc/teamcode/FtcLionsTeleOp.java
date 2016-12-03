@@ -120,7 +120,7 @@ public class FtcLionsTeleOp extends OpMode {
     public void loop() {
         if (DEBUG) {
             // TELEMETRY FOR JOYSTICK DEBUGGING
-              telemetry.addData("Text:", "Gamepad1 Movement y: " + gamepad1.left_stick_y + ", " + gamepad1.right_stick_y);
+            telemetry.addData("Text:", "Gamepad1 Movement y: " + gamepad1.left_stick_y + ", " + gamepad1.right_stick_y);
             telemetry.addData("Text:", "Gamepad1 Movement x: " + gamepad1.left_trigger + ", " + gamepad1.right_trigger);
         }
 
@@ -159,24 +159,24 @@ public class FtcLionsTeleOp extends OpMode {
         ////////////////////////////////
 
 
-        // TANK DRIVE \\
-        leftFront.setPower(-gamepad1.left_stick_y / 1.4); // /1.4 for general power issues considering the robot is somewhat tipsy
-        rightFront.setPower(gamepad1.right_stick_y / 1.4);
-        leftBack.setPower(-gamepad1.left_stick_y / 1.4);
-        rightBack.setPower(gamepad1.right_stick_y / 1.4);
+        // TANK DRIVE
+        leftFront.setPower(-gamepad1.left_stick_y / 1.3); // /1.4 for general power issues considering the robot is somewhat tipsy
+        rightFront.setPower(gamepad1.right_stick_y / 1.3);
+        leftBack.setPower(-gamepad1.left_stick_y / 1.3);
+        rightBack.setPower(gamepad1.right_stick_y / 1.3);
 
         while (gamepad1.right_trigger != 0) { //right side of robot
-            rightFront.setPower(-gamepad1.right_trigger / (2 + .7)); //assuming that the right side is backwards
-            rightBack.setPower(gamepad1.right_trigger / (2 + .7));
-            leftFront.setPower(gamepad1.right_trigger / (2 + 0));
-            leftBack.setPower(-gamepad1.right_trigger / (2 + 0));
+            rightFront.setPower(-gamepad1.right_trigger / 2); //assuming that the right side is backwards
+            rightBack.setPower(gamepad1.right_trigger / 2);
+            leftFront.setPower(gamepad1.right_trigger / 2);
+            leftBack.setPower(-gamepad1.right_trigger / 2);
 
         }
         while (gamepad1.left_trigger != 0) { //left side of the robot
-            rightFront.setPower(gamepad1.left_trigger / (2 + 0)); //assuming that the right side is backwards
-            rightBack.setPower(-gamepad1.left_trigger / (2 + 0));
-            leftFront.setPower(-gamepad1.left_trigger / (2 + .7));
-            leftBack.setPower(gamepad1.left_trigger / (2 + .7)); //.7 for the general power per side and .8 for the wheels moving forward
+            rightFront.setPower(gamepad1.left_trigger / 2); //assuming that the right side is backwards
+            rightBack.setPower(-gamepad1.left_trigger / 2);
+            leftFront.setPower(-gamepad1.left_trigger / 2);
+            leftBack.setPower(gamepad1.left_trigger / 2); //.7 for the general power per side and .8 for the wheels moving forward
         }
 
 
