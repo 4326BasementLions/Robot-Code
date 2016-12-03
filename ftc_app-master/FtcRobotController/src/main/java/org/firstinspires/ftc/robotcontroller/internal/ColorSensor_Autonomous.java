@@ -38,7 +38,6 @@ public class ColorSensorCode_Autonomous extends OpMode {
        rightShuffle(2);
        wait(1);
 
-
        leftShuffle(2); // 2 for leftShuffle() and rightShuffle() are stand ins
        rightShuffle(2);
        wait(1);
@@ -111,7 +110,7 @@ public class ColorSensorCode_Autonomous extends OpMode {
        // send the info back to driver station using telemetry function.
        telemetry.addData("LED", bLedOn ? "On" : "Off");
        telemetry.addData("Clear", colorSensor.alpha());
-       telemetry.addData("Red  ", colorSensor.red());
+       telemetry.addData("Red ", colorSensor.red());
        telemetry.addData("Green", colorSensor.green());
        telemetry.addData("Blue ", colorSensor.blue());
        telemetry.addData("Hue", hsvValues[0]);
