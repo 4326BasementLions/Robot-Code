@@ -74,6 +74,11 @@ public class FTCLionsTeleOp extends OpMode {
     DcMotor leftFront;
     DcMotor rightFront;
     DcMotor rightBack;
+    DcMotor Scooper;
+    DcMotor Shooter1;
+    DcMotor Shooter2;
+    
+    Servo Button;
 
     public FTCLionsTeleOp() {
 
