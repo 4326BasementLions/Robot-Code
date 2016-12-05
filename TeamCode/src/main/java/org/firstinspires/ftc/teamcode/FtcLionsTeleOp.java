@@ -135,12 +135,12 @@ public class FtcLionsTeleOp extends OpMode {
         while(gamepad2.a) {
             button.setPosition(1);
         }
-        while(gamepad2.right_bumper) {
-            shooter1.setPower(1);
-            shooter2.setPower(-1);
+        while(gamepad2.right_bumper) { //shooter
+            shooter1.setPower(1/3);
+            shooter2.setPower(-1/3);
         }
-        while(gamepad2.left_bumber) {
-            scooper.setPower(1);
+        while(gamepad2.left_bumber) { //scooper
+            scooper.setPower(1/2);
         }
 
         while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) {
