@@ -32,6 +32,7 @@ public class ColorSensorCode_Autonomous extends OpMode {
        leftBack = hardwareMap.dcMotor.get("leftBack");
        rightFront = hardwareMap.dcMotor.get("rightFront");
        rightBack = hardwareMap.dcMotor.get("rightBack");
+       colorSensor = hardwareMap.colorSensor.get("colorSensor");
    }
 
    // Drive Methods //
