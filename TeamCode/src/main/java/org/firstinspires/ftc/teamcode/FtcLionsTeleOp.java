@@ -85,9 +85,9 @@ public class FtcLionsTeleOp extends OpMode {
 
     @Override
     public void init() {
-//        set lifter to start at a sightly...
-//        higher position that it's current rest.
-        lifter.setTargetPosition(1);
+////        set lifter to start at a sightly...
+////        higher position that it's current rest.
+//        lifter.setTargetPosition(1);
     }
 
     public void wait(int time){

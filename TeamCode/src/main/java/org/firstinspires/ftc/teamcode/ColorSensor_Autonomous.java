@@ -32,6 +32,7 @@ public class ColorSensorCode_Autonomous extends OpMode {
 
     DcMotor lifter;
     Servo holder;
+    ColorSensor colorSensor;
 
 
    public void start() {
