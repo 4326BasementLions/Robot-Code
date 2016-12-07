@@ -36,7 +36,7 @@ public class FtcLionsTeleOp extends OpMode {
     DcMotor rightFront;
     DcMotor rightBack;
     
-    Servo scooper;
+    DcMotor scooper;
     DcMotor shooter1;
     DcMotor shooter2;
     Servo button;
@@ -64,18 +64,18 @@ public class FtcLionsTeleOp extends OpMode {
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         
-        scooper = hardwareMap.servo.get("scooper");
+        scooper = hardwareMap.dcMotor.get("scooper");
         shooter1 = hardwareMap.dcMotor.get("shooter1");
         shooter2 = hardwareMap.dcMotor.get("shooter2");
         shooter2.setDirection(DcMotor.Direction.REVERSE);
         button = hardwareMap.servo.get("button");
         
-        //scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         
         button.scaleRange(0, 1);
-        scooper.scaleRange(0, 1);
+        
 
         lifter = hardwareMap.dcMotor.get("lifter");
         lifter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
@@ -141,8 +141,8 @@ public class FtcLionsTeleOp extends OpMode {
             shooter2.setPower(-1/3);
         }
         while(gamepad2.left_bumber) { //scooper
-          //  scooper.setPower(1/2);
-            scooper.setPosition(1);
+          scooper.setPower(1/2);
+ 
         }
 
         while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) {
@@ -170,7 +170,7 @@ public class FtcLionsTeleOp extends OpMode {
 
             shooter1.setPower(0);
             shooter2.setPower(0);
-            scooper.setPosition(0);
+            scooper.setPower(0);
             button.setPosition(0);
         }
     }
