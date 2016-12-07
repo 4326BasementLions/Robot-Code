@@ -1,4 +1,5 @@
- package com.qualcomm.ftcrobotcontroller.opmodes;
+//package com.qualcomm.ftcrobotcontroller.opmodes;
+package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.ftcrobotcontroller.R;
@@ -8,16 +9,15 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
-/**
-* Created by Alba_101 on 12/2/16.
-*/
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorController;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-public class ColorSensorCode_Autonomous extends OpMode {
+ @Autonomous(name="ColorAutonomous", group="ColorAutonomous")  //AUTONOMOUS!
+
+ public class ColorSensorCode_Autonomous extends OpMode {
 
 
     DcMotor leftBack;
@@ -160,15 +160,15 @@ public class ColorSensorCode_Autonomous extends OpMode {
 
     public void checkColor(String direction, double power) {
         sense();
-        if (direction = "left" || direction = "Left") { //assiming we're on the red alliance
+        if (direction == "left"|| direction == "Left") { //assiming we're on the red alliance
             do {
                 leftShuffle(power);
-            }while (colorSensor.red() < 100 && colorSensor.blue() < 100)
+            }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
 
             if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
                 do {
                     leftShuffle(power);
-                }while (colorSensor.blue() < 100 && colorSensor.red() >= 200)
+                }while (colorSensor.blue() < 100 && colorSensor.red() >= 200);
 
                 if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
                     button.setPosition(1); //push button
@@ -179,15 +179,15 @@ public class ColorSensorCode_Autonomous extends OpMode {
             }
         }
 
-        if (direction = "right" || direction = "Right") { //assuming we're on the blue alliance
+        if (direction == "right" || direction == "Right") { //assuming we're on the blue alliance
             do {
                 rightShuffle(power);
-            }while (colorSensor.red() < 100 && colorSensor.blue() < 100)
+            }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
 
             if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
                 do {
                     rightShuffle(power);
-                }while (colorSensor.red() < 100 && colorSensor.blue() >= 200)
+                }while (colorSensor.red() < 100 && colorSensor.blue() >= 200);
 
                 if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
                     button.setPosition(1); //push button
@@ -218,9 +218,7 @@ public class ColorSensorCode_Autonomous extends OpMode {
         wait(1);
         sense();
         driveForward(45,45,45,46);
-        checkColor(left,30); //direction of starting movement + power of the driving
-
-
+        checkColor("left",30); //direction of starting movement + power of the driving
 
         stopDaBot();
     }

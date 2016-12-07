@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode;//package com.qualcomm.ftcrobotcontroller.opmodes;
+//package com.qualcomm.ftcrobotcontroller.opmodes;
+package org.firstinspires.ftc.teamcode;
 
 import android.bluetooth.BluetoothClass;
 
@@ -90,7 +91,7 @@ public class FtcLionsTeleOp extends OpMode {
 //        lifter.setTargetPosition(1);
     }
 
-    public void wait(int time){
+    public void wait(int  time){
         try{
             Thread.sleep(time * 1000);
         } catch (InterruptedException e) {
@@ -143,7 +144,7 @@ public class FtcLionsTeleOp extends OpMode {
             shooter1.setPower(1/3);
             shooter2.setPower(-1/3);
         }
-        while(gamepad2.left_bumber) { //scooper
+        while(gamepad2.left_bumper) { //scooper
           scooper.setPower(1/2);
  
         }
@@ -158,7 +159,7 @@ public class FtcLionsTeleOp extends OpMode {
         if(gamepad2.x && holderTrue == true) {
             holderTrue = false;
             holder.setPosition(1);
-            wait(1.5);
+            wait(1);
             holder.scaleRange(0, 1); //sets current pos to default till further notice
         }
 
