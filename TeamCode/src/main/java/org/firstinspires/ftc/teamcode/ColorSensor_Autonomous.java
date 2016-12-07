@@ -20,19 +20,51 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 public class ColorSensorCode_Autonomous extends OpMode {
 
 
-   DcMotor leftBack;
-   DcMotor leftFront;
-   DcMotor rightFront;
-   DcMotor rightBack;
-   ColorSensor colorSensor;
+    DcMotor leftBack;
+    DcMotor leftFront;
+    DcMotor rightFront;
+    DcMotor rightBack;
+
+    DcMotor scooper;
+    DcMotor shooter1;
+    DcMotor shooter2;
+    Servo button;
+
+    DcMotor lifter;
+    Servo holder;
 
 
-   public void init(){
+   public void start() {
        leftFront = hardwareMap.dcMotor.get("leftFront");
        leftBack = hardwareMap.dcMotor.get("leftBack");
        rightFront = hardwareMap.dcMotor.get("rightFront");
        rightBack = hardwareMap.dcMotor.get("rightBack");
-       colorSensor = hardwareMap.colorSensor.get("colorSensor");
+
+       leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+       scooper = hardwareMap.dcMotor.get("scooper");
+       shooter1 = hardwareMap.dcMotor.get("shooter1");
+       shooter2 = hardwareMap.dcMotor.get("shooter2");
+       shooter2.setDirection(DcMotor.Direction.REVERSE);
+       button = hardwareMap.servo.get("button");
+
+       scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+       shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+       shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+
+       button.scaleRange(0, 1);
+
+
+       lifter = hardwareMap.dcMotor.get("lifter");
+       lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODERS); //for intital start
+       holder = hardwareMap.servo.get("holder");
+       holder.scaleRange(0, 1);
+   }
+   public void init(){
+
    }
 
    // Drive Methods //
@@ -126,6 +158,7 @@ public class ColorSensorCode_Autonomous extends OpMode {
 
 
     public void checkColor(String direction, double power) {
+        sense();
         if (direction = "left" || direction = "Left") { //assiming we're on the red alliance
             do {
                 leftShuffle(power);
@@ -137,11 +170,11 @@ public class ColorSensorCode_Autonomous extends OpMode {
                 }while (colorSensor.blue() < 100 && colorSensor.red() >= 200)
 
                 if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
-                    //push button
+                    button.setPosition(1); //push button
                 }
             }
             if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
-                //push button
+                button.setPosition(1); //push button
             }
         }
 
@@ -156,11 +189,11 @@ public class ColorSensorCode_Autonomous extends OpMode {
                 }while (colorSensor.red() < 100 && colorSensor.blue() >= 200)
 
                 if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
-                    //push button
+                    button.setPosition(1); //push button
                 }
             }
             if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
-                //push button
+                button.setPosition(1); //push button
             }
         }
     }

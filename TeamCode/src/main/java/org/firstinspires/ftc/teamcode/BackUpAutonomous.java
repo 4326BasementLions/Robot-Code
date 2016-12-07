@@ -8,16 +8,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class BackUpAutonomous extends OpMode {
 
   DcMotor leftBack;
-  DcMotor rightBack;
   DcMotor leftFront;
   DcMotor rightFront;
-  
+  DcMotor rightBack;
+
   DcMotor scooper;
   DcMotor shooter1;
   DcMotor shooter2;
-  
   Servo button;
 
+  DcMotor lifter;
+  Servo holder;
 }
 
     @Override
@@ -40,32 +41,7 @@ public class BackUpAutonomous extends OpMode {
  double startPos=0;
     @Override
     public void init() {
-      leftBack=hardwareMap.dcMotor.get("leftBack");
-      leftFront=hardwareMap.dcMotor.get("leftFront");
-      rightFront=hardwareMap.dcMotor.get("rightFront");
-      rightBack=hardwareMap.dcMotor.get("rightBack");
-      
-      
-      scooper=hardwareMap.dcMotor.get("scooper");
-      shooter1=hardwareMap.dcMotor.get("shooter1");
-      shooter2=hardwareMap.dcMotor.get("shooter2");
-      shooter2.setDirection(DcMotor.Direction.REVERSE);
-      
-      
-      button=hardwareMap.servo.get("button");
-      button.scaleRange(0, 1);
-      
-      rightBack.setDirection(DcMotor.Direction.REVERSE);
-      rightFront.setDirection(DcMotor.Direction.REVERSE);
-      
-      leftBack.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      leftFront.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      rightBack.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      rightFront.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      
-      scooper.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-      shooter1.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-      shooter2.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+
     }
     
 @Override
@@ -133,4 +109,31 @@ public void start {
     public void stop() {
     }
 
+        leftFront = hardwareMap.dcMotor.get("leftFront");
+        leftBack = hardwareMap.dcMotor.get("leftBack");
+        rightFront = hardwareMap.dcMotor.get("rightFront");
+        rightBack = hardwareMap.dcMotor.get("rightBack");
+
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        scooper = hardwareMap.dcMotor.get("scooper");
+        shooter1 = hardwareMap.dcMotor.get("shooter1");
+        shooter2 = hardwareMap.dcMotor.get("shooter2");
+        shooter2.setDirection(DcMotor.Direction.REVERSE);
+        button = hardwareMap.servo.get("button");
+
+        scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+
+        button.scaleRange(0, 1);
+
+
+        lifter = hardwareMap.dcMotor.get("lifter");
+        lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODERS); //for intital start
+        holder = hardwareMap.servo.get("holder");
+        holder.scaleRange(0, 1);
 }

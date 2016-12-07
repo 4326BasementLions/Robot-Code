@@ -78,13 +78,16 @@ public class FtcLionsTeleOp extends OpMode {
         
 
         lifter = hardwareMap.dcMotor.get("lifter");
-        lifter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODERS); //for intital start
         holder = hardwareMap.servo.get("holder");
         holder.scaleRange(0, 1);
     }
 
     @Override
     public void init() {
+//        set lifter to start at a sightly...
+//        higher position that it's current rest.
+        lifter.setTargetPosition(1);
     }
 
     public void wait(int time){
