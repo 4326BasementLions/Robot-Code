@@ -40,14 +40,13 @@ public class FtcLionsTeleOp extends OpMode {
     DcMotor scooper;
     DcMotor shooter1;
     DcMotor shooter2;
-    Servo button;
+//    Servo buttonPush;
 
     DcMotor lifter;
     boolean limiter = false; //as a random boolean until further notice
-    Servo holder;
+    Servo holder; //ballCap refrence
     boolean holderTrue = true; //true = is holding the arm
 
-    Servo ballCap;
 
     public FtcLionsTeleOp() {
 
@@ -71,15 +70,13 @@ public class FtcLionsTeleOp extends OpMode {
         shooter1 = hardwareMap.dcMotor.get("shooter1");
         shooter2 = hardwareMap.dcMotor.get("shooter2");
         shooter2.setDirection(DcMotor.Direction.REVERSE);
-        button = hardwareMap.servo.get("button");
-
-        ballCap = hardwareMap.servo.get("capBall");
+//        buttonPush = hardwareMap.servo.get("button");
         
         scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        
-        button.scaleRange(0, 1);
+
+//        buttonPush.scaleRange(0, 1);
         
 
         lifter = hardwareMap.dcMotor.get("lifter");
@@ -87,14 +84,17 @@ public class FtcLionsTeleOp extends OpMode {
         holder = hardwareMap.servo.get("holder");
         holder.scaleRange(0, 1);
 
-        ballCap.scaleRange(0, 1);
     }
 
     @Override
     public void init() {
-////        set lifter to start at a sightly...
-////        higher position that it's current rest.
+////        set lifter to start at a sightly higher position that it's current rest.
+//        set holder to continously hold the arm from the initialization
 //        lifter.setTargetPosition(1);
+        holder.setPosition(1);
+        holderTrue = true;
+        holder.scaleRange(1, 0);
+
     }
 
     public void wait(int  time){
@@ -143,9 +143,9 @@ public class FtcLionsTeleOp extends OpMode {
         //     GAMEPAD 2 CONTROLS     //
         ////////////////////////////////
 
-        while(gamepad2.a) {
-            button.setPosition(1);
-        }
+//        while(gamepad2.a) {
+//            buttonPush.setPosition(1);
+//        }
         while(gamepad2.right_bumper) { //shooter
             shooter1.setPower(1/3);
             shooter2.setPower(-1/3);
@@ -160,9 +160,6 @@ public class FtcLionsTeleOp extends OpMode {
         }
         while(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
             lifter.setPower(gamepad2.right_stick_y);
-        }
-        if(gamepad2.right_stick_button) {
-            ballCap.setPosition(1);
         }
 
         if(gamepad2.x && holderTrue == true) {
@@ -184,7 +181,7 @@ public class FtcLionsTeleOp extends OpMode {
             shooter1.setPower(0);
             shooter2.setPower(0);
             scooper.setPower(0);
-            button.setPosition(0);
+//            buttonPush.setPosition(0);
         }
     }
 

@@ -6,7 +6,9 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83d42b04-8206-49ce-9aa3-9b46017b84e4" name="Default" comment="" />
+    <list default="true" id="83d42b04-8206-49ce-9aa3-9b46017b84e4" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/FtcLionsTeleOp.java" afterPath="" />
+    </list>
     <ignored path="Robot-Code.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
