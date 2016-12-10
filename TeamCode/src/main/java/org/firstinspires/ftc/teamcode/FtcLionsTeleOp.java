@@ -47,7 +47,8 @@ public class FtcLionsTeleOp extends OpMode {
     Servo holder; //ballCap refrence
     boolean holderTrue = true; //true = is holding the arm
 
-
+//    double lifterBot = 0;
+//    double lifterTop = 0;
     public FtcLionsTeleOp() {
 
     }
@@ -91,10 +92,10 @@ public class FtcLionsTeleOp extends OpMode {
 ////        set lifter to start at a sightly higher position that it's current rest.
 //        set holder to continously hold the arm from the initialization
 //        lifter.setTargetPosition(1);
-        holder.setPosition(1);
-        holderTrue = true;
-        holder.scaleRange(1, 0);
-
+//        holder.setPosition(1);
+//        holderTrue = true;
+//        holder.scaleRange(1, 0);
+//        lifterBot = lifter.getCurrentPosition(); //getting base of lifter
     }
 
     public void wait(int  time){
@@ -122,23 +123,23 @@ public class FtcLionsTeleOp extends OpMode {
 
 
         // TANK DRIVE
-        leftFront.setPower(-gamepad1.left_stick_y / 1.3); // /1.4 for general power issues considering the robot is somewhat tipsy
-        rightFront.setPower(gamepad1.right_stick_y / 1.3);
-        leftBack.setPower(-gamepad1.left_stick_y / 1.3);
-        rightBack.setPower(gamepad1.right_stick_y / 1.3);
+        leftFront.setPower(-gamepad1.left_stick_y / 1.2); // /1.4 for general power issues considering the robot is somewhat tipsy
+        rightFront.setPower(gamepad1.right_stick_y / 1.2);
+        leftBack.setPower(-gamepad1.left_stick_y / 1.2);
+        rightBack.setPower(gamepad1.right_stick_y / 1.2);
 
-        while (gamepad1.right_trigger != 0) { //right side of robot
-            rightFront.setPower(-gamepad1.right_trigger / 2); //assuming that the right side is backwards
-            rightBack.setPower(gamepad1.right_trigger / 2);
-            leftFront.setPower(gamepad1.right_trigger / 2);
-            leftBack.setPower(-gamepad1.right_trigger / 2);
+        if(gamepad1.right_trigger != 0) { //right side of robot
+            rightFront.setPower(-gamepad1.right_trigger); //assuming that the right side is backwards
+            rightBack.setPower(gamepad1.right_trigger);
+            leftFront.setPower(gamepad1.right_trigger);
+            leftBack.setPower(-gamepad1.right_trigger);
 
         }
-        while (gamepad1.left_trigger != 0) { //left side of the robot
-            rightFront.setPower(gamepad1.left_trigger / 2); //assuming that the right side is backwards
-            rightBack.setPower(-gamepad1.left_trigger / 2);
-            leftFront.setPower(-gamepad1.left_trigger / 2);
-            leftBack.setPower(gamepad1.left_trigger / 2); //.7 for the general power per side and .8 for the wheels moving forward
+        if(gamepad1.left_trigger != 0) { //left side of the robot
+            rightFront.setPower(gamepad1.left_trigger); //assuming that the right side is backwards
+            rightBack.setPower(-gamepad1.left_trigger);
+            leftFront.setPower(-gamepad1.left_trigger);
+            leftBack.setPower(gamepad1.left_trigger); //.7 for the general power per side and .8 for the wheels moving forward
         }
 
 
@@ -149,27 +150,34 @@ public class FtcLionsTeleOp extends OpMode {
 //        while(gamepad2.a) {
 //            buttonPush.setPosition(1);
 //        }
-        while(gamepad2.right_bumper) { //shooter
-            shooter1.setPower(1/3);
-            shooter2.setPower(-1/3);
+        if(gamepad2.right_bumper) { //shooter
+            shooter1.setPower(1/2);
+            shooter2.setPower(-1/2);
         }
-        while(gamepad2.left_bumper) { //scooper
-          scooper.setPower(1);
+        if(gamepad2.left_stick_y != 0) { //scooper
+          scooper.setPower(gamepad2.left_stick_y);
  
         }
 
-        while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
-            lifter.setPower(gamepad2.right_stick_y);
+//        if(lifter.getCurrentPosition() > lifterBot || lifter.getCurrentPosition() > lifterTop) {
+//            limiter = true;
+//        }
+//        else {
+//            limiter = false;
+//        }
+
+        if(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
+            lifter.setPower(-gamepad2.right_stick_y);
         }
-        while(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
-            lifter.setPower(gamepad2.right_stick_y);
+        if(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
+            lifter.setPower(-gamepad2.right_stick_y);
         }
 
         if(gamepad2.x && holderTrue == true) { //holder for the claw
             holderTrue = false;
             holder.setPosition(1);
             wait(1);
-            holder.scaleRange(0, 1); //sets current pos to default till further notice
+            holder.scaleRange(1, 0); //sets current pos to default till further notice
         }
 
 
