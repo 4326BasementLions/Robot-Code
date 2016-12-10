@@ -111,6 +111,9 @@ public class FtcLionsTeleOp extends OpMode {
             // TELEMETRY FOR JOYSTICK DEBUGGING
             telemetry.addData("Text:", "Gamepad1 Movement y: " + gamepad1.left_stick_y + ", " + gamepad1.right_stick_y);
             telemetry.addData("Text:", "Gamepad1 Movement x: " + gamepad1.left_trigger + ", " + gamepad1.right_trigger);
+            telemetry.addData("Text:", "Lifter Data: " + gamepad2.right_stick_y); //*** --> for encoders
+            telemetry.addData("Text:", "Holder Data: " + gamepad2.x + ", " + holderTrue);
+            telemetry.addData("Text:", "Shooting Data: scoop." + gamepad2.left_bumper + " ; shoot." + gamepad2.right_bumper);
         }
 
         ////////////////////////////////
@@ -155,14 +158,14 @@ public class FtcLionsTeleOp extends OpMode {
  
         }
 
-        while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) {
+        while(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
             lifter.setPower(gamepad2.right_stick_y);
         }
         while(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
             lifter.setPower(gamepad2.right_stick_y);
         }
 
-        if(gamepad2.x && holderTrue == true) {
+        if(gamepad2.x && holderTrue == true) { //holder for the claw
             holderTrue = false;
             holder.setPosition(1);
             wait(1);
@@ -171,7 +174,7 @@ public class FtcLionsTeleOp extends OpMode {
 
 
 
-        // E-STOP \\
+            /// E-STOP \\\
         if (gamepad1.left_bumper && gamepad1.right_bumper && gamepad2.left_bumper && gamepad2.right_bumper) { //mash those bumpers
             leftFront.setPower(0);
             leftBack.setPower(0);
