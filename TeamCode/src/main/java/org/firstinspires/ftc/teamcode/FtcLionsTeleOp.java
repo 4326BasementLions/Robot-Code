@@ -123,6 +123,8 @@ public class FtcLionsTeleOp extends OpMode {
 
 
         // TANK DRIVE
+        
+        
         leftFront.setPower(-gamepad1.left_stick_y / 1.2); // /1.4 for general power issues considering the robot is somewhat tipsy
         rightFront.setPower(gamepad1.right_stick_y / 1.2);
         leftBack.setPower(-gamepad1.left_stick_y / 1.2);
@@ -133,6 +135,15 @@ public class FtcLionsTeleOp extends OpMode {
             rightBack.setPower(gamepad1.right_trigger);
             leftFront.setPower(gamepad1.right_trigger);
             leftBack.setPower(-gamepad1.right_trigger);
+            /*
+            if(gamepad1.right_stick_y != 0) {
+            rightFront.setPower(scale(gamepad1.right_stick_y - gamepad1.right_stick_x + gamepad1.right_stick_z);
+            rightBack.setPower(scale(gamepad1.right_stick_y + gamepad1.right_stick_x - gamepad1.right_stick_z);
+            leftFront.setPower(scale(gamepad1.right_stick_y + gamepad1.right_stick_x - gamepad1.right_stick_z);
+            leftBack.setPower(scale(gamepad1.right_stick_y - gamepad1.right_stick_x + gamepad1.right_stick_z);
+            
+            }
+            */
 
         }
         if(gamepad1.left_trigger != 0) { //left side of the robot
