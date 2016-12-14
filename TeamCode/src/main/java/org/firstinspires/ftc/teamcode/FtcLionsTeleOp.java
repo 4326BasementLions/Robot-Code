@@ -22,6 +22,29 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 
+/*
+    Controls
+    
+    Controller 1 → Drive 
+
+Joystick1_x	Mecanum drive(x)
+Joystick1_y	Mecanum drive(y)
+Joystick2_x	Mecanum drive(a)
+Joystick2_y	
+D-pad up 	lifter up
+D-pad down	lifter down
+D-pad left	
+D-pad right	
+A	shoot
+B	fling 
+X	scooping
+Y 	Reverse direction of Mecanum drive
+Bumper L	High Speed
+Bumper R	Low Speed
+Trigger L	
+Trigger R
+    */
+
 @TeleOp(name="TeleOp", group="TeleOp")  //TELEOP!
 
 public class FtcLionsTeleOp extends OpMode {
@@ -31,6 +54,8 @@ public class FtcLionsTeleOp extends OpMode {
      */
 
     final boolean DEBUG = true;
+    
+    final int threshold = 5;
 
     DcMotor leftBack;
     DcMotor leftFront;
@@ -123,36 +148,32 @@ public class FtcLionsTeleOp extends OpMode {
 
 
         // TANK DRIVE
-        
-        
-        leftFront.setPower(-gamepad1.left_stick_y / 1.2); // /1.4 for general power issues considering the robot is somewhat tipsy
-        rightFront.setPower(gamepad1.right_stick_y / 1.2);
-        leftBack.setPower(-gamepad1.left_stick_y / 1.2);
-        rightBack.setPower(gamepad1.right_stick_y / 1.2);
-
-        if(gamepad1.right_trigger != 0) { //right side of robot
-            rightFront.setPower(-gamepad1.right_trigger); //assuming that the right side is backwards
-            rightBack.setPower(gamepad1.right_trigger);
-            leftFront.setPower(gamepad1.right_trigger);
-            leftBack.setPower(-gamepad1.right_trigger);
-            /*
-            if(gamepad1.right_stick_y != 0) {
-            rightFront.setPower(scale(gamepad1.right_stick_y - gamepad1.right_stick_x + gamepad1.right_stick_z);
-            rightBack.setPower(scale(gamepad1.right_stick_y + gamepad1.right_stick_x - gamepad1.right_stick_z);
-            leftFront.setPower(scale(gamepad1.right_stick_y + gamepad1.right_stick_x - gamepad1.right_stick_z);
-            leftBack.setPower(scale(gamepad1.right_stick_y - gamepad1.right_stick_x + gamepad1.right_stick_z);
-            
-            }
-            */
-
-        }
-        if(gamepad1.left_trigger != 0) { //left side of the robot
-            rightFront.setPower(gamepad1.left_trigger); //assuming that the right side is backwards
-            rightBack.setPower(-gamepad1.left_trigger);
-            leftFront.setPower(-gamepad1.left_trigger);
-            leftBack.setPower(gamepad1.left_trigger); //.7 for the general power per side and .8 for the wheels moving forward
-        }
-
+    int rf = 0, lf = 0, rb = 0, lb = 0;
+    boolean updateMotors = false;
+    if(abs(gamepad1.right_stick_y) > threshold || abs(gamepad1.right_stick_x) > threshold)
+    {
+        rf = (gamepad1.right_stick_y - gamepad1.right_stick_x)/2;
+        lf = (-gamepad1.right_stick_y - gamepad1.right_stick_x)/2;
+        rb = (-gamepad1.right_stick_y - gamepad1.right_stick_x)/2;
+        lb = (gamepad1.right_stick_y - gamepad1.right_stick_x)/2;
+        updateMotors = true;
+    }
+    if(abs(gamepad1.left_stick_x) > threshold)
+    {
+        //rotate
+        rf = (-gamepad1.left_stick_x)/2;
+        lf = (-gamepad1.left_stick_x)/2;
+        rb = (gamepad1.left_stick_x)/2;
+        lb = (gamepad1.left_stick_x)/2;
+        updateMotors = true;
+    }
+    if( updateMotors )
+    {
+        rightFront.setPower(rf);
+        leftFront.setPower(lf);
+        rightBack.setPower(rb);
+        leftBack.setPower(lb);
+    }
 
         ////////////////////////////////
         //     GAMEPAD 2 CONTROLS     //
