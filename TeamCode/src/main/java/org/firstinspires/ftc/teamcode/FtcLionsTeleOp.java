@@ -29,6 +29,49 @@ public class FtcLionsTeleOp extends OpMode {
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
      */
+    /*
+    Controls
+    
+    Controller 1 → Drive 
+
+Joystick1_x	Mecanum drive(x)
+Joystick1_y	Mecanum drive(y)
+Joystick2_x	Mecanum drive(a)
+Joystick2_y	
+D-pad up 	
+D-pad down	
+D-pad left	
+D-pad right	
+A	
+B	Reverse
+X	
+Y 	
+Bumper L	High Speed
+Bumper R	Low Speed
+Trigger L	
+Trigger R	
+
+
+Controller 2 → Mechanisms 
+
+
+Joystick1_x	
+Joystick1_y	
+Joystick2_x	
+Joystick2_y	
+D-pad up 	lifter up
+D-pad down	lifter down
+D-pad left	
+D-pad right	
+A	shoot
+B	fling 
+X	scooping
+Y 	
+Bumper L	
+Bumper R	
+Trigger L	
+Trigger R	
+    */
 
     final boolean DEBUG = true;
 
