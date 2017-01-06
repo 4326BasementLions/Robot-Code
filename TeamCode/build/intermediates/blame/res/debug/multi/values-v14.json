@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/horacemann/Desktop/Other FTC Attempted Folders/ftc_app-master/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
+        "outputFile": "/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v14/values-v14.xml",
         "map": [
             {
                 "to": {
@@ -12,7 +12,7 @@
                     "endOffset": 201
                 },
                 "from": {
-                    "file": "/Users/horacemann/Desktop/Other FTC Attempted Folders/ftc_app-master/TeamCode/build/intermediates/exploded-aar/ftc_app-master/FtcRobotController/unspecified/res/values-v14/values-v14.xml",
+                    "file": "/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/exploded-aar/ftc_app-2.35.1/FtcRobotController/unspecified/res/values-v14/values-v14.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/horacemann/Desktop/Other FTC Attempted Folders/ftc_app-master/FtcRobotController/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
+        "outputFile": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 108
                 },
                 "from": {
-                    "file": "/Users/horacemann/Desktop/Other FTC Attempted Folders/ftc_app-master/FtcRobotController/src/main/res/values-w820dp/dimens.xml",
+                    "file": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/src/main/res/values-w820dp/dimens.xml",
                     "position": {
                         "startLine": 37,
                         "startColumn": 4,
@@ -24,7 +24,7 @@
         ]
     },
     {
-        "outputFile": "/Users/horacemann/Desktop/ftc_app-master/FtcRobotController/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
+        "outputFile": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w820dp-v13/values-w820dp-v13.xml",
         "map": [
             {
                 "to": {
@@ -35,7 +35,7 @@
                     "endOffset": 108
                 },
                 "from": {
-                    "file": "/Users/horacemann/Desktop/ftc_app-master/FtcRobotController/src/main/res/values-w820dp/dimens.xml",
+                    "file": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/src/main/res/values-w820dp/dimens.xml",
                     "position": {
                         "startLine": 37,
                         "startColumn": 4,
