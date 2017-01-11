@@ -1,26 +1,3 @@
-/*
-    Controls
-
-    Controller 1 → Drive
-
-Joystick1_x	Mecanum drive(x)
-Joystick1_y	Mecanum drive(y)
-Joystick2_x	Mecanum drive(a)
-Joystick2_y
-D-pad up 	lifter up
-D-pad down	lifter down
-D-pad left
-D-pad right
-A	shoot
-B	fling
-X	scooping
-Y 	Reverse direction of Mecanum drive
-Bumper L	High Speed
-Bumper R	Low Speed
-Trigger L
-Trigger R
-*/
-
 //package com.qualcomm.ftcrobotcontroller.opmodes;
 package org.firstinspires.ftc.teamcode;
 
@@ -53,6 +30,30 @@ public class FTCLionsTeleOp extends OpMode {
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
      */
 
+    /*
+    Controls
+
+    Controller 1 → Drive
+
+Joystick1_x	Mecanum drive(x)
+Joystick1_y	Mecanum drive(y)
+Joystick2_x	Mecanum drive(a)
+Joystick2_y
+D-pad up 	lifter up
+D-pad down	lifter down
+D-pad left
+D-pad right
+A	shoot
+B	fling
+X	scooping
+Y 	Reverse direction of Mecanum drive
+Bumper L	High Speed
+Bumper R	Low Speed
+Trigger L
+Trigger R
+    */
+
+
     final boolean DEBUG = true;
 
     DcMotor leftBack;
@@ -70,7 +71,13 @@ public class FTCLionsTeleOp extends OpMode {
     boolean holderTrue = true; //true = is holding the arm
 
     double lifterBot = 0;
-    double lifterTop = 0;
+    double lifterTop = 100; //pre-set from testing
+
+    static float div = 3;
+    double lowThreshold = .02;
+    double highThreshold = .75;
+    double lowThreshold2 = .035;
+    double highThreshold2 = .8;
     public FTCLionsTeleOp() {
 
     }
@@ -83,6 +90,8 @@ public class FTCLionsTeleOp extends OpMode {
         leftBack = hardwareMap.dcMotor.get("leftBack");
         rightFront = hardwareMap.dcMotor.get("rightFront");
         rightBack = hardwareMap.dcMotor.get("rightBack");
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -107,17 +116,14 @@ public class FTCLionsTeleOp extends OpMode {
         holder = hardwareMap.servo.get("holder");
         holder.scaleRange(0, 1);
 
+//        set lifter to start at a sightly higher position that it's current rest.
+//        set holder to continously hold the arm from the initialization
+//        lifter.setTargetPosition(1);
+        lifterBot = (lifter.getCurrentPosition() + .1); //getting base of lifter
     }
 
     @Override
     public void init() {
-////        set lifter to start at a sightly higher position that it's current rest.
-//        set holder to continously hold the arm from the initialization
-//        lifter.setTargetPosition(1);
-//        holder.setPosition(1);
-//        holderTrue = true;
-//        holder.scaleRange(1, 0);
-//        lifterBot = lifter.getCurrentPosition(); //getting base of lifter
     }
 
     public void wait(int  time){
@@ -128,12 +134,30 @@ public class FTCLionsTeleOp extends OpMode {
         }
     }
 
+    public float jHigh(float in) //threshold checking function --> used for most motors
+    {
+        float absin = Math.abs(in);
+        if( absin < lowThreshold )
+            return (float) 0.;
+        else if( absin < highThreshold )
+            return (float) (in / 2.);
+        return in;
+    }
+    public float jLow(float in) //threshold checking function --> used for most motors
+    {
+        float absin = Math.abs(in);
+        if( absin < lowThreshold2 )
+            return (float) 0.;
+        else if( absin < highThreshold2 )
+            return (float) (in / 2.);
+        return in;
+    }
     @Override
     public void loop() {
         if (DEBUG) {
             // TELEMETRY FOR JOYSTICK DEBUGGING
-            telemetry.addData("Text:", "Gamepad1 Movement y: " + gamepad1.left_stick_y + ", " + gamepad1.right_stick_y);
-            telemetry.addData("Text:", "Gamepad1 Movement x: " + gamepad1.left_trigger + ", " + gamepad1.right_trigger);
+            telemetry.addData("Text:", "Gamepad1 Movement 1: " + gamepad1.right_stick_y + ", " + gamepad1.right_stick_y);
+            telemetry.addData("Text:", "Gamepad1 Movement 2: " + gamepad1.left_stick_x);
             telemetry.addData("Text:", "Lifter Data: " + gamepad2.right_stick_y); //*** --> for encoders
             telemetry.addData("Text:", "Holder Data: " + gamepad2.x + ", " + holderTrue);
             telemetry.addData("Text:", "Shooting Data: scoop." + gamepad2.left_stick_y + " ; shoot." + gamepad2.right_trigger);
@@ -143,68 +167,54 @@ public class FTCLionsTeleOp extends OpMode {
         //     GAMEPAD 1 CONTROLS     //
         ////////////////////////////////
 
+        //right front motor and left back motors are backwards
+        float rf = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x)) / div;  //right-stick-y = forward/backward
+        float lf = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x)) / div;  //right-stick-x = left/right
+        float rb = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x)) / div;  //left-stick-x = turning
+        float lb = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x)) / div;
 
-        int rf = 0, lf = 0, rb = 0, lb = 0;
-        boolean updateMotors = false;
-        if(abs(gamepad1.right_stick_y)>threshold| |abs(gamepad1.right_stick_x)>threshold)
+//        To fix diagonals, we need to change the power of certain motors, but only during the time when we are going diagonal in a specific direction
 
-        {
-            rf = (gamepad1.right_stick_y - gamepad1.right_stick_x) / 2;
-            lf = (-gamepad1.right_stick_y - gamepad1.right_stick_x) / 2;
-            rb = (-gamepad1.right_stick_y - gamepad1.right_stick_x) / 2;
-            lb = (gamepad1.right_stick_y - gamepad1.right_stick_x) / 2;
-            updateMotors = true;
-        }
+//         if (Math.abs(gamepad1.right_stick_y) == 1.0 && Math.abs(gamepad1.right_stick_x) == 1.0){
+//             lf += ;
+//             rb += ;
+//             lb += ;
+//             rf += ;
+//         }
 
-        if(abs(gamepad1.left_stick_x) >threshold)
+        rightFront.setPower(rf);
+        leftFront.setPower(lf);
+        rightBack.setPower(rb);
+        leftBack.setPower(lb);
 
-        {
-            //rotate
-            rf = (-gamepad1.left_stick_x) / 2;
-            lf = (-gamepad1.left_stick_x) / 2;
-            rb = (gamepad1.left_stick_x) / 2;
-            lb = (gamepad1.left_stick_x) / 2;
-            updateMotors = true;
-        }
-
-        if(updateMotors)
-
-        {
-            rightFront.setPower(rf);
-            leftFront.setPower(lf);
-            rightBack.setPower(rb);
-            leftBack.setPower(lb);
-        }
-
+        telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
 
         ////////////////////////////////
         //     GAMEPAD 2 CONTROLS     //
         ////////////////////////////////
 
         if(gamepad2.right_trigger != 0) { //shooter
-            shooter1.setPower(gamepad2.right_trigger / 2);
-            shooter2.setPower(-gamepad2.right_trigger / 2);
+            shooter1.setPower(jHigh(gamepad2.right_trigger / 2));
+            shooter2.setPower(jHigh(gamepad2.right_trigger / 2));
         }
         if(gamepad2.left_stick_y != 0) { //scooper
-            scooper.setPower(gamepad2.left_stick_y);
+            scooper.setPower(jHigh(gamepad2.left_stick_y));
 
         }
 
-//        if(lifter.getCurrentPosition() > lifterBot || lifter.getCurrentPosition() > lifterTop) {
-//            limiter = true;
-//        }
-//        else {
-//            limiter = false;
-//        }
+        if(lifter.getCurrentPosition() > lifterBot || lifter.getCurrentPosition() > lifterTop) {
+            limiter = true;
+        }
+        else {
+            limiter = false;
+        }
 
         if(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
-            lifter.setPower(-gamepad2.right_stick_y);
+            lifter.setPower(jHigh(-gamepad2.right_stick_y));
         }
         if(gamepad2.x && holderTrue == true) { //holder for the claw
             holderTrue = false;
             holder.setPosition(1);
-            wait(1);
-//            holder.scaleRange(1, 0); //sets current pos to default till further notice
         }
         if(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
             lifter.setPower(-gamepad2.right_stick_y);
@@ -212,7 +222,8 @@ public class FTCLionsTeleOp extends OpMode {
 
 
         /// E-STOP \\\
-        if (gamepad1.left_bumper && gamepad1.right_bumper && gamepad2.left_bumper && gamepad2.right_bumper) { //mash those bumpers
+        if (gamepad1.left_bumper && gamepad1.right_bumper && gamepad1.right_stick_button && gamepad1.left_stick_button ||
+                gamepad2.left_bumper && gamepad2.right_bumper && gamepad2.right_stick_button && gamepad2.left_stick_button) { //mash those bumpers & stick buttons
             leftFront.setPower(0);
             leftBack.setPower(0);
             rightFront.setPower(0);
@@ -221,6 +232,7 @@ public class FTCLionsTeleOp extends OpMode {
             shooter1.setPower(0);
             shooter2.setPower(0);
             scooper.setPower(0);
+            lifter.setPower(0);
 //            buttonPush.setPosition(0);
         }
     }
