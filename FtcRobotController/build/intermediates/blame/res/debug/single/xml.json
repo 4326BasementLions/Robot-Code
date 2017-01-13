@@ -4,6 +4,14 @@
         "source": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/k9legacybot.xml"
     },
     {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/pushbotsens.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/pushbotsens.xml"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/preferences.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/src/main/res/xml/preferences.xml"
+    },
+    {
         "merged": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/res/merged/debug/xml/pushbotsens.xml",
         "source": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/pushbotsens.xml"
     },
@@ -32,8 +40,16 @@
         "source": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/squarebot.xml"
     },
     {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/squarebot.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/squarebot.xml"
+    },
+    {
         "merged": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/res/merged/debug/xml/pushbotsens.xml",
         "source": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/pushbotsens.xml"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/device_filter.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/src/main/res/xml/device_filter.xml"
     },
     {
         "merged": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/res/merged/debug/xml/preferences.xml",
@@ -42,6 +58,18 @@
     {
         "merged": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/res/merged/debug/xml/device_filter.xml",
         "source": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/src/main/res/xml/device_filter.xml"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/k9legacybot.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/k9legacybot.xml"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/pushbot.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/pushbot.xml"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/debug/xml/k9usbbot.xml",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/exploded-aar/FtcCommon-release/res/xml/k9usbbot.xml"
     },
     {
         "merged": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/res/merged/debug/xml/k9usbbot.xml",

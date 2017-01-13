@@ -4,6 +4,10 @@
         "source": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/icon_menu.png"
     },
     {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/ic_launcher.png",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/ic_launcher.png"
+    },
+    {
         "merged": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/icon_robotcontroller.png",
         "source": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/icon_robotcontroller.png"
     },
@@ -14,6 +18,14 @@
     {
         "merged": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/ic_launcher.png",
         "source": "/Users/horacemann/Desktop/ftc_app-2.35.1/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/icon_robotcontroller.png",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/icon_robotcontroller.png"
+    },
+    {
+        "merged": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/icon_menu.png",
+        "source": "/Users/horacemann/Desktop/Robot-Code/FtcRobotController/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/icon_menu.png"
     },
     {
         "merged": "/Users/horacemann/Desktop/HM Official (2016-2017)/FTC/ftc_app-2.35/FtcRobotController/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/icon_robotcontroller.png",
