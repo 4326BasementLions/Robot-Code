@@ -24,7 +24,7 @@ import android.view.View;
 
 @TeleOp(name="TeleOp", group="TeleOp")  //TELEOP!
 
-public class FTCLionsTeleOp extends OpMode {
+public class FtcLionsTeleOp extends OpMode {
     /*
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
@@ -39,16 +39,16 @@ Joystick1_x	Mecanum drive(x)
 Joystick1_y	Mecanum drive(y)
 Joystick2_x	Mecanum drive(a)
 Joystick2_y
-D-pad up 	lifter up
-D-pad down	lifter down
+D-pad up
+D-pad down
 D-pad left
 D-pad right
-A	shoot
-B	fling
-X	scooping
-Y 	Reverse direction of Mecanum drive
-Bumper L	High Speed
-Bumper R	Low Speed
+A
+B
+X	Releases Claw
+Y 	Engages Servo
+Bumper L
+Bumper R
 Trigger L
 Trigger R
     */
@@ -73,12 +73,13 @@ Trigger R
     double lifterBot = 0;
     double lifterTop = 100; //pre-set from testing
 
-    static float div = 3;
     double lowThreshold = .02;
     double highThreshold = .75;
-    double lowThreshold2 = .035;
+    double lowThreshold2 = .036;
     double highThreshold2 = .8;
-    public FTCLionsTeleOp() {
+    float div = 1;
+
+    public FtcLionsTeleOp() {
 
     }
 
@@ -93,16 +94,17 @@ Trigger R
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         scooper = hardwareMap.dcMotor.get("scooper");
         shooter1 = hardwareMap.dcMotor.get("shooter1");
         shooter2 = hardwareMap.dcMotor.get("shooter2");
         shooter2.setDirection(DcMotor.Direction.REVERSE);
 //        buttonPush = hardwareMap.servo.get("button");
+
 
         scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -112,9 +114,8 @@ Trigger R
 
 
         lifter = hardwareMap.dcMotor.get("lifter");
-        lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //for intital start
-        holder = hardwareMap.servo.get("holder");
-        holder.scaleRange(0, 1);
+        lifter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //for intital start
+
 
 //        set lifter to start at a sightly higher position that it's current rest.
 //        set holder to continously hold the arm from the initialization
@@ -124,9 +125,13 @@ Trigger R
 
     @Override
     public void init() {
+        holder = hardwareMap.servo.get("holder");
+        holder.scaleRange(0, 1);
+        holder.setPosition(1.0);
+
     }
 
-    public void wait(int  time){
+    public void wait(int time){
         try{
             Thread.sleep(time * 1000);
         } catch (InterruptedException e) {
@@ -167,20 +172,26 @@ Trigger R
         //     GAMEPAD 1 CONTROLS     //
         ////////////////////////////////
 
+//        float div = 0;
+//        if (jLow(gamepad1.right_stick_y) != 0) {
+//            div += 1;
+//        }
+//        if (jLow(gamepad1.right_stick_x) != 0) {
+//            div += 1;
+//        }
+//        if (jLow(gamepad1.left_stick_x) != 0) {
+//            div += 1;
+//        }
+
         //right front motor and left back motors are backwards
-        float rf = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x)) / div;  //right-stick-y = forward/backward
-        float lf = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x)) / div;  //right-stick-x = left/right
-        float rb = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x)) / div;  //left-stick-x = turning
-        float lb = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x)) / div;
+        float rf = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-y = forward/backward
+        float lf = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-x = left/right
+        float rb = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));  //left-stick-x = turning
+        float lb = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));
 
 //        To fix diagonals, we need to change the power of certain motors, but only during the time when we are going diagonal in a specific direction
 
-//         if (Math.abs(gamepad1.right_stick_y) == 1.0 && Math.abs(gamepad1.right_stick_x) == 1.0){
-//             lf += ;
-//             rb += ;
-//             lb += ;
-//             rf += ;
-//         }
+
 
         rightFront.setPower(rf);
         leftFront.setPower(lf);
@@ -189,16 +200,19 @@ Trigger R
 
         telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
 
+
+
         ////////////////////////////////
         //     GAMEPAD 2 CONTROLS     //
         ////////////////////////////////
 
+
         if(gamepad2.right_trigger != 0) { //shooter
-            shooter1.setPower(jHigh(gamepad2.right_trigger / 2));
-            shooter2.setPower(jHigh(gamepad2.right_trigger / 2));
+            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.2);
+            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.2);
         }
-        if(gamepad2.left_stick_y != 0) { //scooper
-            scooper.setPower(jHigh(gamepad2.left_stick_y));
+        if(Math.abs(gamepad2.left_stick_y) > .09) { //scooper
+            scooper.setPower(jHigh(-gamepad2.left_stick_y) / 1.3);
 
         }
 
@@ -212,10 +226,14 @@ Trigger R
         if(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
             lifter.setPower(jHigh(-gamepad2.right_stick_y));
         }
-        if(gamepad2.x && holderTrue == true) { //holder for the claw
+        if(gamepad2.x) { //holder for the claw
             holderTrue = false;
-            holder.setPosition(1);
+            holder.setPosition(0.0);
         }
+//        else if(gamepad2.y) {
+//            holderTrue = true;
+//            holder.setPosition(1.0);
+//        }
         if(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
             lifter.setPower(-gamepad2.right_stick_y);
         }
