@@ -50,13 +50,13 @@ import com.qualcomm.robotcore.hardware.Servo;
        shooter1 = hardwareMap.dcMotor.get("shooter1");
        shooter2 = hardwareMap.dcMotor.get("shooter2");
        shooter2.setDirection(DcMotor.Direction.REVERSE);
-       button = hardwareMap.servo.get("button");
+   //    button = hardwareMap.servo.get("button");
 
        scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
        shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
 
-       button.scaleRange(0, 1);
+    //   button.scaleRange(0, 1);
 
 
        lifter = hardwareMap.dcMotor.get("lifter");
