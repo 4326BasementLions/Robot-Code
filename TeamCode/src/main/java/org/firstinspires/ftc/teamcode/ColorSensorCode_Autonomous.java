@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.Servo;
     DcMotor scooper;
     DcMotor shooter1;
     DcMotor shooter2;
-    Servo button;
+    //Servo button;
 
     DcMotor lifter;
     Servo holder;
@@ -71,32 +71,68 @@ import com.qualcomm.robotcore.hardware.Servo;
    // Drive Methods //
 
 
-   public void tankDrive (double power){
-       leftFront.setPower(-power);
-       rightFront.setPower(power);
-       leftBack.setPower(-power);
-       rightBack.setPower(power);
-   }
+  public void driveForward(int pos1, int pos2, int pos3, int pos4, int newTime) {
+        while (runtime.seconds() <= (runtime.seconds() + newTime)) {
+            leftFront.setPower(pos1 / 10);
+            leftBack.setPower(pos2 / 10);
+            rightFront.setPower(pos3 / 10);
+            rightBack.setPower(pos4 / 10);
+        }
+        wait(5);
+        runtime.reset();
+    }
 
-   public void rightShuffle(double power){
-       leftFront.setPower(power);
-       leftBack.setPower(-power);
-       rightFront.setPower(-power);
-       rightBack.setPower(power);
-   }
-   public void leftShuffle(double power){
-       leftFront.setPower(-power);
-       leftBack.setPower(power);
-       rightFront.setPower(power);
-       rightBack.setPower(-power);
-   }
+    public void shoot() {
+        while (runtime.seconds() <= 6) {
+            shooter1.setPower(pos / 1.4);
+            shooter2.setPower(pos / 1.4);
+            scooper.setPower(pos);
+        }
+        runtime.reset();
+    }
 
-   public void driveForward(int pos1, int pos2, int pos3, int pos4){
-       leftFront.setTargetPosition(pos1);
-       leftBack.setTargetPosition(pos2);
-       rightFront.setTargetPosition(pos3);
-       rightBack.setTargetPosition(pos4);
-   }
+    public void drivePower(double power) {
+        leftFront.setPower(power / 100);
+        rightFront.setPower(power / 100);
+        leftBack.setPower(power / 100);
+        rightBack.setPower(power / 100);
+    }
+
+    public void stopRobot() {
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        scooper.setPower(0);
+        shooter1.setPower(0);
+        shooter2.setPower(0);
+        wait(1);
+    }
+
+    public void wait(int time) {
+        try {
+            Thread.sleep(time * 100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+  public void turnRight(pos1, pos2){
+          while (runtime.seconds() <= (runtime.seconds() + newTime)) {
+            leftFront.setPower(pos1 / 10);
+            leftBack.setPower(pos2 / 10);
+        }
+        wait(5);
+        runtime.reset();
+    }
+    public void turnLeft(pos3, pos4){
+          while (runtime.seconds() <= (runtime.seconds() + newTime)) {
+            rightFront.setPower(pos3 / 10);
+            rightBack.setPower(pos4 / 10);
+        }
+        wait(5);
+        runtime.reset();
+    }
+  
 
    //SENSOR CODE
    public void sense(){
@@ -149,48 +185,58 @@ import com.qualcomm.robotcore.hardware.Servo;
        }
    }
 
-   public void stopDaBot(){
-       leftBack.setPower(0);
-       leftFront.setPower(0);
-       rightBack.setPower(0);
-       rightFront.setPower(0);
-       wait(1);
-   }
 
 
     public void checkColor(String direction, double power) {
         sense();
         if (direction == "left"|| direction == "Left") { //assiming we're on the red alliance
             do {
-                leftShuffle(power);
+               // leftShuffle(power);
+             turnLeft(10, 10);
+             driveForward(10, 10, 10, 10);
+             turnRight(10,10);
+           
             }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
 
             if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
                 do {
-                    leftShuffle(power);
+                   // leftShuffle(power);
+                 turnLeft(10, 10);
+                 driveForward(10, 10, 10, 10);
+                 turnRight(10,10);
+                 
                 }while (colorSensor.blue() < 100 && colorSensor.red() >= 200);
 
                 if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
-                    button.setPosition(1); //push button
+                   // button.setPosition(1); //push button
+                 driveForward(5,5,5,5);
                 }
             }
             if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
-                button.setPosition(1); //push button
+                //button.setPosition(1); //push button
+             driveForward(5,5,5,5);
             }
         }
 
         if (direction == "right" || direction == "Right") { //assuming we're on the blue alliance
             do {
-                rightShuffle(power);
+              //  rightShuffle(power);
+              turnRight(10, 10);
+              driveForward(10, 10, 10, 10);
+              turnLeft(10,10);
             }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
 
             if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
                 do {
-                    rightShuffle(power);
+                   // rightShuffle(power);
+                   turnRight(10, 10);
+                   driveForward(10, 10, 10, 10);
+                   turnLeft(10,10);
                 }while (colorSensor.red() < 100 && colorSensor.blue() >= 200);
 
                 if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
-                    button.setPosition(1); //push button
+                   // button.setPosition(1); //push button
+                 driveForward(5, 5, 5, 5);
                 }
             }
             if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
@@ -220,7 +266,7 @@ import com.qualcomm.robotcore.hardware.Servo;
         driveForward(45,45,45,46);
         checkColor("left",30); //direction of starting movement + power of the driving
 
-        stopDaBot();
+        stopRobot();
     }
 
 }
