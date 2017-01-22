@@ -15,6 +15,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
  @Autonomous(name="ColorAutonomous", group="ColorAutonomous")  //AUTONOMOUS!
 
  public class ColorSensorCode_Autonomous extends OpMode {
@@ -145,11 +149,12 @@ import com.qualcomm.robotcore.hardware.Servo;
        // get a reference to the RelativeLayout so we can change the background
        // color of the Robot Controller app to match the hue detected by the RGB sensor.
        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
+    
 
        // bLedOn represents the state of the LED.
        boolean bLedOn = true;
 
-    ;   // turn the LED on in the beginning, just so user will know that the sensor is active.
+       // turn the LED on in the beginning, just so user will know that the sensor is active.
        colorSensor.enableLed(bLedOn);
 
        colorSensor = hardwareMap.colorSensor.get("sensor_color");
@@ -164,8 +169,9 @@ import com.qualcomm.robotcore.hardware.Servo;
        telemetry.addData("Green", colorSensor.green());
        telemetry.addData("Blue ", colorSensor.blue());
        telemetry.addData("Hue", hsvValues[0]);
-       telemetry.addData("Is Red: ", (colorSensor.red()>200) && (colorSensor.blue()<100));
-       telemetry.addData("Is Blue: ", (colorSensor.blue()>200) && (colorSensor.red()<100));
+      // telemetry.addData("Is Red: ", (colorSensor.red()>200) && (colorSensor.blue()<100));
+      // telemetry.addData("Is Blue: ", (colorSensor.blue()>200) && (colorSensor.red()<100));
+    
 
        // change the background color to match the color detected by the RGB sensor.
        // pass a reference to the hue, saturation, and value array as an argument
@@ -196,23 +202,27 @@ import com.qualcomm.robotcore.hardware.Servo;
              driveForward(10, 10, 10, 10);
              turnRight(10,10);
            
-            }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
+            }//while (colorSensor.red() < 100 && colorSensor.blue() < 100);
 
-            if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
+            if//(colorSensor.blue() >= 200 && colorSensor.red() < 100) 
+            {(hsvValues[<=5])
                 do {
                    // leftShuffle(power);
                  turnLeft(10, 10);
                  driveForward(10, 10, 10, 10);
                  turnRight(10,10);
                  
-                }while (colorSensor.blue() < 100 && colorSensor.red() >= 200);
+                }while //(colorSensor.blue() < 100 && colorSensor.red() >= 200);
+                 (hsvValues[.=5]);
 
-                if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
+                if(//colorSensor.red() >= 200 && colorSensor.blue() < 100) {
                    // button.setPosition(1); //push button
+                 {(hsvValues[<=5])
                  driveForward(5,5,5,5);
                 }
             }
-            if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
+            if//(colorSensor.red() >= 200 && colorSensor.blue() < 100) 
+                 {(hsvValues[<=5])
                 //button.setPosition(1); //push button
              driveForward(5,5,5,5);
             }
@@ -224,22 +234,28 @@ import com.qualcomm.robotcore.hardware.Servo;
               turnRight(10, 10);
               driveForward(10, 10, 10, 10);
               turnLeft(10,10);
-            }while (colorSensor.red() < 100 && colorSensor.blue() < 100);
+            }while //(colorSensor.red() < 100 && colorSensor.blue() < 100);
+             (hsvValues[>5]);
 
-            if(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
+            if//(colorSensor.red() >= 200 && colorSensor.blue() < 100) {
+             (hsvValues[>=5])
                 do {
                    // rightShuffle(power);
                    turnRight(10, 10);
                    driveForward(10, 10, 10, 10);
                    turnLeft(10,10);
-                }while (colorSensor.red() < 100 && colorSensor.blue() >= 200);
+                }while //(colorSensor.red() < 100 && colorSensor.blue() >= 200);
+                 (hsvValues[>5]);
 
-                if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
+                if//(colorSensor.blue() >= 200 && colorSensor.red() < 100) 
+                {(hsvValues[<=5])
                    // button.setPosition(1); //push button
                  driveForward(5, 5, 5, 5);
                 }
             }
-            if(colorSensor.blue() >= 200 && colorSensor.red() < 100) {
+            if//(colorSensor.blue() >= 200 && colorSensor.red() < 100) 
+            {
+             (hsvValues[<=5])
                 button.setPosition(1); //push button
             }
         }
