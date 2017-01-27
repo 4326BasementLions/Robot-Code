@@ -132,7 +132,7 @@ public class FTCLionsAutonomousOp extends OpMode {
         // turn the LED on in the beginning, just so user will know that the sensor is active.
         colorSensor.enableLed(bLedOn);
 
-        colorSensor = hardwareMap.colorSensor.get("sensor_color");
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
 
         // convert the RGB values to HSV values.
         Color.RGBToHSV(colorSensor.red(), colorSensor.green(), colorSensor.blue(), hsvValues);
@@ -144,8 +144,8 @@ public class FTCLionsAutonomousOp extends OpMode {
         telemetry.addData("Green", colorSensor.green());
         telemetry.addData("Blue ", colorSensor.blue());
         telemetry.addData("Hue", hsvValues[0]);
-        // telemetry.addData("Is Red: ", (colorSensor.red()>200) && (colorSensor.blue()<100));
-        // telemetry.addData("Is Blue: ", (colorSensor.blue()>200) && (colorSensor.red()<100));
+         telemetry.addData("Is Red: ", (colorSensor.red()>200) && (colorSensor.blue()<100));
+         telemetry.addData("Is Blue: ", (colorSensor.blue()>200) && (colorSensor.red()<100));
 
         // change the background color to match the color detected by the RGB sensor.
         // pass a reference to the hue, saturation, and value array as an argument
@@ -180,7 +180,7 @@ public class FTCLionsAutonomousOp extends OpMode {
             }
 
             else if(colorSensor.red() >= 200 && colorSensor.blue() < 100) { //if red
-                driveForward(10, -10, -10, 10, (senseDuration));
+                driveForward(-10, 10, 10, -10, (senseDuration * (2/3)));
             }
         }
         driveForward(8, 8, 8, 9, 20); //medium power drive forward for 2 seconds
