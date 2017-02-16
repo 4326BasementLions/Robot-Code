@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothClass;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.util.Range;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.hardware.Sensor;
@@ -79,6 +81,8 @@ Trigger R
     double highThreshold2 = .8;
     float div = 1;
 
+    ColorSensor colorSensor;
+
     public FtcLionsTeleOp() {
 
     }
@@ -121,6 +125,8 @@ Trigger R
 //        set holder to continously hold the arm from the initialization
 //        lifter.setTargetPosition(1);
         lifterBot = (lifter.getCurrentPosition() + .1); //getting base of lifter
+
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
     }
 
     @Override
@@ -159,6 +165,7 @@ Trigger R
     }
     @Override
     public void loop() {
+        sense();
         if (DEBUG) {
             // TELEMETRY FOR JOYSTICK DEBUGGING
             telemetry.addData("Text:", "Gamepad1 Movement 1: " + gamepad1.right_stick_y + ", " + gamepad1.right_stick_y);
@@ -166,6 +173,8 @@ Trigger R
             telemetry.addData("Text:", "Lifter Data: " + gamepad2.right_stick_y); //*** --> for encoders
             telemetry.addData("Text:", "Holder Data: " + gamepad2.x + ", " + holderTrue);
             telemetry.addData("Text:", "Shooting Data: scoop." + gamepad2.left_stick_y + " ; shoot." + gamepad2.right_trigger);
+
+            telemetry.addData("Text:", "isColor Data: " + isColor(colorSensor, 5));
         }
 
         ////////////////////////////////
@@ -208,8 +217,8 @@ Trigger R
 
 
         if(gamepad2.right_trigger != 0) { //shooter
-            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.2);
-            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.2);
+            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.4); //to prevent penalty and incerase accuracy
+            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.4);
         }
         if(Math.abs(gamepad2.left_stick_y) > .09) { //scooper
             scooper.setPower(jHigh(-gamepad2.left_stick_y) / 1.3);
@@ -255,6 +264,87 @@ Trigger R
         }
     }
 
+    public void sense() {
+        // hsvValues is an array that will hold the hue, saturation, and value information.
+        float hsvValues[] = {0F,0F,0F};
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        // get a reference to the RelativeLayout so we can change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+
+        // bPrevState and bCurrState represent the previous and current state of the button.
+        boolean bPrevState = false;
+        boolean bCurrState = false;
+
+        // bLedOn represents the state of the LED.
+        boolean bLedOn = true;
+
+        // get a reference to our ColorSensor object.
+        //colorSensor = hardwareMap.colorSensor.get("sensor_color");   //--> already declared
+
+        // Set the LED in the beginning
+        colorSensor.enableLed(bLedOn);
+
+        // wait for the start button to be pressed.
+//        waitForStart(); //--> unneeded in loop
+
+        // while the op mode is active, loop and read the RGB data.
+        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
+//        while (opModeIsActive()) {
+
+        // check the status of the x button on either gamepad.
+        bCurrState = gamepad1.x;
+
+        // check for button state transitions.
+        if ((bCurrState == true) && (bCurrState != bPrevState))  {
+
+            // button is transitioning to a pressed state. So Toggle LED
+            bLedOn = !bLedOn;
+            colorSensor.enableLed(bLedOn);
+        }
+
+        // update previous state variable.
+        bPrevState = bCurrState;
+
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
+
+        // send the info back to driver station using telemetry function.
+//        telemetry.addData("LED", bLedOn ? "On" : "Off");
+//        telemetry.addData("Clear", colorSensor.alpha());
+//        telemetry.addData("Red  ", colorSensor.red());
+//        telemetry.addData("Green", colorSensor.green());
+//        telemetry.addData("Blue ", colorSensor.blue());
+//        telemetry.addData("Hue", hsvValues[0]);
+
+        // change the background color to match the color detected by the RGB sensor.
+        // pass a reference to the hue, saturation, and value array as an argument
+        // to the HSVToColor method.
+        relativeLayout.post(new Runnable() {
+            public void run() {
+                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+            }
+        });
+
+        telemetry.update();
+//        }
+    }
+    public String isColor(ColorSensor colorSensor, final int colorDiff) { //outputs which color {red, blue, none} is shown by sensor
+        String whichColor = "";
+        if((colorSensor.red() - colorDiff) > colorSensor.blue() && (colorSensor.red() - colorDiff) > colorSensor.green()) {
+            whichColor = "red";
+        }
+        else if((colorSensor.blue() - colorDiff) > colorSensor.red() && (colorSensor.blue() - colorDiff) > colorSensor.green()) {
+            whichColor = "blue";
+        }
+        else {
+            whichColor = "none";
+        }
+        return whichColor;
+    }
 
     @Override
     public void stop() {
