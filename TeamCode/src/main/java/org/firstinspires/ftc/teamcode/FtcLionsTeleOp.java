@@ -71,7 +71,11 @@ Trigger R
     boolean limiter = false; //as a random boolean until further notice
     Servo holder; //ballCap refrence
     boolean holderTrue = true; //true = is holding the arm
-
+    
+    
+    Servo sensorExtend;
+    boolean retracted = true;
+    
     double lifterBot = 0;
     double lifterTop = 100; //pre-set from testing
 
@@ -127,6 +131,9 @@ Trigger R
         lifterBot = (lifter.getCurrentPosition() + .1); //getting base of lifter
 
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
+        
+        sensorExtend = hardwareMap.servo.get("sensorExtend");
+        sensorExtend.scaleRange(0,1);
     }
 
     @Override
@@ -208,7 +215,19 @@ Trigger R
         leftBack.setPower(lb);
 
         telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
-
+        
+        
+        //Brings out sensor
+        if(gamepad1.x && retracted == true){
+            sensorExtend.setPosition(1.0);
+            retracted = false;
+        }
+        
+        //Retracts sensor
+        if(gamepad1.x && retracted == false){
+            sensorExtend.setPosition(0.0);
+            retracted = true;
+        }
 
 
         ////////////////////////////////
