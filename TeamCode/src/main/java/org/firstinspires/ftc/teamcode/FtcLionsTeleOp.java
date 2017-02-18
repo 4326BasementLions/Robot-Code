@@ -71,11 +71,9 @@ Trigger R
     boolean limiter = false; //as a random boolean until further notice
     Servo holder; //ballCap refrence
     boolean holderTrue = true; //true = is holding the arm
-    
-    
+
     Servo sensorExtend;
-    boolean retracted = true;
-    
+
     double lifterBot = 0;
     double lifterTop = 100; //pre-set from testing
 
@@ -130,18 +128,18 @@ Trigger R
 //        lifter.setTargetPosition(1);
         lifterBot = (lifter.getCurrentPosition() + .1); //getting base of lifter
 
+        holder = hardwareMap.servo.get("holder");
+        holder.scaleRange(0, 1);
+
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
-        
+
         sensorExtend = hardwareMap.servo.get("sensorExtend");
-        sensorExtend.scaleRange(0,1);
+        sensorExtend.scaleRange(0, 1);
     }
 
     @Override
     public void init() {
-        holder = hardwareMap.servo.get("holder");
-        holder.scaleRange(0, 1);
-        holder.setPosition(1.0);
-
+//        holder.setPosition(1.0);
     }
 
     public void wait(int time){
@@ -181,29 +179,19 @@ Trigger R
             telemetry.addData("Text:", "Holder Data: " + gamepad2.x + ", " + holderTrue);
             telemetry.addData("Text:", "Shooting Data: scoop." + gamepad2.left_stick_y + " ; shoot." + gamepad2.right_trigger);
 
-            telemetry.addData("Text:", "isColor Data: " + isColor(colorSensor, 5));
+            telemetry.addData("Text:", "isColor Data: " + isColor(colorSensor));
+            telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
         }
 
         ////////////////////////////////
         //     GAMEPAD 1 CONTROLS     //
         ////////////////////////////////
 
-//        float div = 0;
-//        if (jLow(gamepad1.right_stick_y) != 0) {
-//            div += 1;
-//        }
-//        if (jLow(gamepad1.right_stick_x) != 0) {
-//            div += 1;
-//        }
-//        if (jLow(gamepad1.left_stick_x) != 0) {
-//            div += 1;
-//        }
-
         //right front motor and left back motors are backwards
-        float rf = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-y = forward/backward
-        float lf = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-x = left/right
-        float rb = (jLow(-gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));  //left-stick-x = turning
-        float lb = (jLow(gamepad1.right_stick_y) - jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));
+        float rf = (jLow(gamepad1.right_stick_y) + jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-y = forward/backward
+        float lf = (jLow(-gamepad1.right_stick_y) + jLow(gamepad1.right_stick_x) - jLow(gamepad1.left_stick_x));  //right-stick-x = left/right
+        float rb = (jLow(-gamepad1.right_stick_y) + jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));  //left-stick-x = turning
+        float lb = (jLow(gamepad1.right_stick_y) + jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));
 
 //        To fix diagonals, we need to change the power of certain motors, but only during the time when we are going diagonal in a specific direction
 
@@ -213,20 +201,16 @@ Trigger R
         leftFront.setPower(lf);
         rightBack.setPower(rb);
         leftBack.setPower(lb);
+//        telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
 
-        telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
-        
-        
         //Brings out sensor
-        if(gamepad1.x && retracted == true){
-            sensorExtend.setPosition(1.0);
-            retracted = false;
-        }
-        
-        //Retracts sensor
-        if(gamepad1.x && retracted == false){
+        if(gamepad1.right_bumper == true){
             sensorExtend.setPosition(0.0);
-            retracted = true;
+        }
+
+        //Retracts sensor
+        if(gamepad1.left_bumper == true){
+            sensorExtend.setPosition(1.0);
         }
 
 
@@ -236,8 +220,8 @@ Trigger R
 
 
         if(gamepad2.right_trigger != 0) { //shooter
-            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.4); //to prevent penalty and incerase accuracy
-            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.4);
+            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.5); //to prevent penalty and incerase accuracy
+            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.5);
         }
         if(Math.abs(gamepad2.left_stick_y) > .09) { //scooper
             scooper.setPower(jHigh(-gamepad2.left_stick_y) / 1.3);
@@ -279,7 +263,9 @@ Trigger R
             shooter2.setPower(0);
             scooper.setPower(0);
             lifter.setPower(0);
-//            buttonPush.setPosition(0);
+
+            sensorExtend.setPosition(0.0);
+//            buttonPush.setPosition(0.0);
         }
     }
 
@@ -351,15 +337,16 @@ Trigger R
         telemetry.update();
 //        }
     }
-    public String isColor(ColorSensor colorSensor, final int colorDiff) { //outputs which color {red, blue, none} is shown by sensor
+    public String isColor(ColorSensor colorSensor) { //outputs which color {red, blue, none} is shown by sensor
         String whichColor = "";
-        if((colorSensor.red() - colorDiff) > colorSensor.blue() && (colorSensor.red() - colorDiff) > colorSensor.green()) {
+
+        if(colorSensor.red() > 20 && (colorSensor.blue() - colorSensor.red()) >= 5) {
             whichColor = "red";
         }
-        else if((colorSensor.blue() - colorDiff) > colorSensor.red() && (colorSensor.blue() - colorDiff) > colorSensor.green()) {
+        if((colorSensor.blue() - colorSensor.red()) >= 9) { //6 replaces color diff
             whichColor = "blue";
         }
-        else {
+        if((colorSensor.blue()  < 5 && colorSensor.red() < 4) || (whichColor != "red" && whichColor != "blue")) {
             whichColor = "none";
         }
         return whichColor;

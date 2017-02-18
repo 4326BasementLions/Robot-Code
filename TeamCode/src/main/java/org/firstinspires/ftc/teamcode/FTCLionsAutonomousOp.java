@@ -42,7 +42,8 @@ public class FTCLionsAutonomousOp extends OpMode {
         sense();
         if (DEBUG) {
             telemetry.addData("Text:", "Time: " + runtime.seconds());
-            telemetry.addData("Text:", "isColor Data: " + isColor(colorSensor, 5));
+            telemetry.addData("Text:", "isColor Data(4): " + isColor(colorSensor));
+            telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
         }
         wait(10); //10th of a sec
 
@@ -50,6 +51,8 @@ public class FTCLionsAutonomousOp extends OpMode {
 //        shoot();
 //        moveToBeacon("left");
         checkColor("left");
+//        moveToBeacon2("left");
+//        checkColor("left");
 
 //        stopRobot();
 
@@ -57,27 +60,26 @@ public class FTCLionsAutonomousOp extends OpMode {
 
     public void moveToBeacon(String allianceSide) {
         if (allianceSide == "left") {
-            driveForward(0, 0, 8, 8, 15);
+//            driveForward(0, 0, 8, 8, 15);
+            driveForward(0, 8, 0, 8, 10);
             driveForward(10, 10, 10, 10, 45);
             driveForward(0, 0, 8, 8, 15);
         }
         else if (allianceSide == "right") {
-            driveForward(8, 8, 0, 0, 15);
+//            driveForward(8, 8, 0, 0, 15);
+            driveForward(0, 8, 0, 8, 10);
             driveForward(10, 10, 10, 10, 45);
-            driveForward(8, 8, 0, 0, 15);
+            driveForward(8, 8, 0, 0, 12);
         }
     }
     public void moveToBeacon2(String allianceSide) {
         if (allianceSide == "left") {
-            driveForward(0, -8, 0, -8, 15);
-            driveForward(-1, 1, -1, 1); //fix!!!!!
-            driveForward(10, 10, 10, 10, 45);
-            driveForward(0, 0, 8, 8, 15);
+            driveForward(-8, -8, -8, -9, 15); //move back slightly
+            driveForward(10, -10, -10, 8, 45); //side-ways to other beacon
         }
         else if (allianceSide == "right") {
-            driveForward(0, -8, 0, -8, 15);
-            driveForward(10, 10, 10, 10, 45);
-            driveForward(8, 8, 0, 0, 15);
+            driveForward(-8, -8, -8, -9, 15); //move back slightly
+            driveForward(-10, 8, 10, -10, 45); //side-ways to other beacon
         }
     }
 
@@ -111,6 +113,7 @@ public class FTCLionsAutonomousOp extends OpMode {
             shooter2.setPower(pos / 1.4);
             scooper.setPower(pos);
         }
+        wait(20);
         runtime.reset();
     }
 
@@ -204,15 +207,16 @@ public class FTCLionsAutonomousOp extends OpMode {
         telemetry.update();
 //        }
     }
-    public String isColor(ColorSensor colorSensor, final int colorDiff) { //outputs which color {red, blue, none} is shown by sensor
+    public String isColor(ColorSensor colorSensor) { //outputs which color {red, blue, none} is shown by sensor
         String whichColor = "";
-        if((colorSensor.red() - colorDiff) > colorSensor.blue() && (colorSensor.red() - colorDiff) > colorSensor.green()) {
+
+        if(colorSensor.red() > 20 && (colorSensor.blue() - colorSensor.red()) >= 5) {
             whichColor = "red";
         }
-        else if((colorSensor.blue() - colorDiff) > colorSensor.red() && (colorSensor.blue() - colorDiff) > colorSensor.green()) {
+        if((colorSensor.blue() - colorSensor.red()) >= 9) { //6 replaces color diff
             whichColor = "blue";
         }
-        else {
+        if((colorSensor.blue()  < 5 && colorSensor.red() < 4) || (whichColor != "red" && whichColor != "blue")) {
             whichColor = "none";
         }
         return whichColor;
@@ -220,40 +224,42 @@ public class FTCLionsAutonomousOp extends OpMode {
 
     double senseDuration = 15;
     public void checkColor(String allianceSide) {
+        sensorExtend.setPosition(1.0);
+        driveForward(5, 5, 8, 8, 15);
         sense();
-        sensorExtend.setPosition(1);
+
         if (allianceSide == "right"|| allianceSide == "Right") { //assuming we're on the blue alliance
             do {
-                driveForward(-10, 10, 10, -10, 0);
-                if(isColor(colorSensor,5) != "none") //saftey to prevent infinite loops
+                driveForward(-7, 5, 7, -7, 0);
+                if(isColor(colorSensor) != "none") //saftey to prevent infinite loops
                     break;
-            }while (isColor(colorSensor,5) == "none"); //while no blue/red color
+            }while (isColor(colorSensor) == "none"); //while no blue/red color
 
-            if(isColor(colorSensor,5) == "blue") { //if blue
-                driveForward(-10, 10, 10, -10, senseDuration);
+            if(isColor(colorSensor) == "blue") { //if blue
+                driveForward(10, -10, -10, 8, senseDuration);
             }
 
-            else if(isColor(colorSensor,5) == "red") { //if red
-                driveForward(-10, 10, 10, -10, (senseDuration * 1.8)); //drive slightly longer
+            else if(isColor(colorSensor) == "red") { //if red
+                driveForward(-10, 8, 10, -10, (senseDuration * 1.6)); //drive slightly longer
             }
         }
 
         if (allianceSide == "left" || allianceSide == "Left") { //assuming we're on the red alliance
             do {
-                driveForward(10, -10, -10, 10, 0);
-                if(isColor(colorSensor,5) != "none") //saftey to prevent infinite loops
+                driveForward(7, -7, -7, 5, 45); //side-ways to other beacon
+                if(isColor(colorSensor) != "none") //saftey to prevent infinite loops
                     break;
-            }while (isColor(colorSensor,5) == "none"); //while no blue/red color
+            }while (isColor(colorSensor) == "none"); //while no blue/red color
 
-            if(isColor(colorSensor,5) == "blue") { //if blue
-                driveForward(10, -10, -10, 10, senseDuration * 1.9); //drive slightly longer
+            if(isColor(colorSensor) == "blue") { //if blue
+                driveForward(10, -10, -10, 8, senseDuration * 2.1); //side-ways to other beacon
             }
 
-            else if(isColor(colorSensor,5) == "red") { //if red
-                driveForward(-10, 10, 10, -10, (senseDuration * 1.4));
+            else if(isColor(colorSensor) == "red") { //if red
+                driveForward(10, -10, -10, 8, (senseDuration));
             }
         }
-        sensorExtend.setPosition(0); //retract
+        sensorExtend.setPosition(0.0); //retract
         driveForward(8, 8, 8, 9, 20); //medium power drive forward for 2 seconds
     }
 
