@@ -63,20 +63,6 @@ Trigger R
     DcMotor rightFront;
     DcMotor rightBack;
 
-    DcMotor scooper;
-    DcMotor shooter1;
-    DcMotor shooter2;
-
-    DcMotor lifter;
-    boolean limiter = false; //as a random boolean until further notice
-    Servo holder; //ballCap refrence
-    boolean holderTrue = true; //true = is holding the arm
-
-    Servo sensorExtend;
-
-    double lifterBot = 0;
-    double lifterTop = 100; //pre-set from testing
-
     double lowThreshold = .02;
     double highThreshold = .75;
     double lowThreshold2 = .036;
@@ -86,7 +72,6 @@ Trigger R
     ColorSensor colorSensor;
 
     public FtcLionsTeleOp() {
-
     }
 
     @Override
@@ -105,36 +90,7 @@ Trigger R
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        scooper = hardwareMap.dcMotor.get("scooper");
-        shooter1 = hardwareMap.dcMotor.get("shooter1");
-        shooter2 = hardwareMap.dcMotor.get("shooter2");
-        shooter2.setDirection(DcMotor.Direction.REVERSE);
-//        buttonPush = hardwareMap.servo.get("button");
-
-
-        scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-//        buttonPush.scaleRange(0, 1);
-
-
-        lifter = hardwareMap.dcMotor.get("lifter");
-        lifter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //for intital start
-
-
-//        set lifter to start at a sightly higher position that it's current rest.
-//        set holder to continously hold the arm from the initialization
-//        lifter.setTargetPosition(1);
-        lifterBot = (lifter.getCurrentPosition() + .1); //getting base of lifter
-
-        holder = hardwareMap.servo.get("holder");
-        holder.scaleRange(0, 1);
-
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
-
-        sensorExtend = hardwareMap.servo.get("sensorExtend");
-        sensorExtend.scaleRange(0, 1);
     }
 
     @Override
@@ -175,9 +131,6 @@ Trigger R
             // TELEMETRY FOR JOYSTICK DEBUGGING
             telemetry.addData("Text:", "Gamepad1 Movement 1: " + gamepad1.right_stick_y + ", " + gamepad1.right_stick_y);
             telemetry.addData("Text:", "Gamepad1 Movement 2: " + gamepad1.left_stick_x);
-            telemetry.addData("Text:", "Lifter Data: " + gamepad2.right_stick_y); //*** --> for encoders
-            telemetry.addData("Text:", "Holder Data: " + gamepad2.x + ", " + holderTrue);
-            telemetry.addData("Text:", "Shooting Data: scoop." + gamepad2.left_stick_y + " ; shoot." + gamepad2.right_trigger);
 
             telemetry.addData("Text:", "isColor Data: " + isColor(colorSensor));
             telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
@@ -194,24 +147,11 @@ Trigger R
         float lb = (jLow(gamepad1.right_stick_y) + jLow(gamepad1.right_stick_x) + jLow(gamepad1.left_stick_x));
 
 //        To fix diagonals, we need to change the power of certain motors, but only during the time when we are going diagonal in a specific direction
-
-
-
         rightFront.setPower(rf);
         leftFront.setPower(lf);
         rightBack.setPower(rb);
         leftBack.setPower(lb);
 //        telemetry.addData("Text:", "Variable Motors: " + rf + ", " + lf + ", " + rb + ", " + lb);
-
-        //Brings out sensor
-        if(gamepad1.right_bumper == true){
-            sensorExtend.setPosition(0.0);
-        }
-
-        //Retracts sensor
-        if(gamepad1.left_bumper == true){
-            sensorExtend.setPosition(1.0);
-        }
 
 
         ////////////////////////////////
@@ -219,80 +159,33 @@ Trigger R
         ////////////////////////////////
 
 
-        if(gamepad2.right_trigger != 0) { //shooter
-            shooter1.setPower(jHigh(gamepad2.right_trigger) / 1.5); //to prevent penalty and incerase accuracy
-            shooter2.setPower(jHigh(gamepad2.right_trigger) / 1.5);
-        }
-        if(Math.abs(gamepad2.left_stick_y) > .09) { //scooper
-            scooper.setPower(jHigh(-gamepad2.left_stick_y) / 1.3);
-
-        }
-
-        if(lifter.getCurrentPosition() > lifterBot || lifter.getCurrentPosition() > lifterTop) {
-            limiter = true;
-        }
-        else {
-            limiter = false;
-        }
-
-        if(gamepad2.right_stick_y != 0 && limiter == false && holderTrue == false) { //lifter for the ball/climb
-            lifter.setPower(jHigh(-gamepad2.right_stick_y));
-        }
-        if(gamepad2.x) { //holder for the claw
-            holderTrue = false;
-            holder.setPosition(0.0);
-        }
-//        else if(gamepad2.y) {
-//            holderTrue = true;
-//            holder.setPosition(1.0);
-//        }
-        if(limiter == true && holderTrue == false && gamepad2.right_stick_y <= 0) {
-            lifter.setPower(-gamepad2.right_stick_y);
-        }
-
-
         /// E-STOP \\\
-        if (gamepad1.left_bumper && gamepad1.right_bumper && gamepad1.right_stick_button && gamepad1.left_stick_button ||
-                gamepad2.left_bumper && gamepad2.right_bumper && gamepad2.right_stick_button && gamepad2.left_stick_button) { //mash those bumpers & stick buttons
+        if (gamepad1.left_bumper && gamepad1.right_bumper || gamepad1.right_stick_button && gamepad1.left_stick_button ||
+                gamepad2.left_bumper && gamepad2.right_bumper || gamepad2.right_stick_button && gamepad2.left_stick_button) { //mash those bumpers & stick buttons
             leftFront.setPower(0);
             leftBack.setPower(0);
             rightFront.setPower(0);
             rightBack.setPower(0);
-
-            shooter1.setPower(0);
-            shooter2.setPower(0);
-            scooper.setPower(0);
-            lifter.setPower(0);
-
-            sensorExtend.setPosition(0.0);
-//            buttonPush.setPosition(0.0);
         }
     }
 
     public void sense() {
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F,0F,0F};
-
         // values is a reference to the hsvValues array.
         final float values[] = hsvValues;
-
         // get a reference to the RelativeLayout so we can change the background
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
-
         // bPrevState and bCurrState represent the previous and current state of the button.
         boolean bPrevState = false;
         boolean bCurrState = false;
-
         // bLedOn represents the state of the LED.
         boolean bLedOn = true;
-
         // get a reference to our ColorSensor object.
         //colorSensor = hardwareMap.colorSensor.get("sensor_color");   //--> already declared
-
         // Set the LED in the beginning
         colorSensor.enableLed(bLedOn);
-
         // wait for the start button to be pressed.
 //        waitForStart(); //--> unneeded in loop
 
@@ -302,21 +195,16 @@ Trigger R
 
         // check the status of the x button on either gamepad.
         bCurrState = gamepad1.x;
-
         // check for button state transitions.
         if ((bCurrState == true) && (bCurrState != bPrevState))  {
-
             // button is transitioning to a pressed state. So Toggle LED
             bLedOn = !bLedOn;
             colorSensor.enableLed(bLedOn);
         }
-
         // update previous state variable.
         bPrevState = bCurrState;
-
         // convert the RGB values to HSV values.
         Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
-
         // send the info back to driver station using telemetry function.
 //        telemetry.addData("LED", bLedOn ? "On" : "Off");
 //        telemetry.addData("Clear", colorSensor.alpha());
@@ -333,13 +221,11 @@ Trigger R
                 relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
             }
         });
-
         telemetry.update();
 //        }
     }
     public String isColor(ColorSensor colorSensor) { //outputs which color {red, blue, none} is shown by sensor
         String whichColor = "";
-
         if(colorSensor.red() > 20 && (colorSensor.blue() - colorSensor.red()) >= 5) {
             whichColor = "red";
         }
@@ -354,6 +240,5 @@ Trigger R
 
     @Override
     public void stop() {
-
     }
 }

@@ -7,7 +7,6 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/libs/Hardware-release-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libs/Hardware-release-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

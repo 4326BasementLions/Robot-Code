@@ -28,9 +28,6 @@ public class FTCLionsAutonomousOp extends OpMode {
     DcMotor rightFront;
     DcMotor rightBack;
 
-    DcMotor scooper;
-    DcMotor shooter1;
-    DcMotor shooter2;
     ColorSensor colorSensor;
 
     Servo holder;
@@ -48,13 +45,13 @@ public class FTCLionsAutonomousOp extends OpMode {
         wait(10); //10th of a sec
 
 
-//        shoot();
-//        moveToBeacon("left");
-        checkColor("left");
-//        moveToBeacon2("left");
-//        checkColor("left");
+        do {
+            wait(20);
+            driveForward(-10, 8, 10, -10, 30);
+            sense();
+        } while (isColor(colorSensor) == "none");
 
-//        stopRobot();
+        //checkColor("right");
 
     }
 
@@ -96,25 +93,17 @@ public class FTCLionsAutonomousOp extends OpMode {
             rightBack.setPower(pos4 / 10);
         }
 
-        while (newTime > 0 && runtime.milliseconds() <= (runtime.milliseconds() + (newTime * 100))) { //1s = 1000ms
-            leftFront.setPower(pos1 / 10);
-            leftBack.setPower(pos2 / 10);
-            rightFront.setPower(pos3 / 10);
-            rightBack.setPower(pos4 / 10);
-            wait(5);
+        else { //extra precaution
+            while (newTime > 0 && runtime.milliseconds() <= (runtime.milliseconds() + (newTime * 100))) { //1s = 1000ms
+                leftFront.setPower(pos1 / 10);
+                leftBack.setPower(pos2 / 10);
+                rightFront.setPower(pos3 / 10);
+                rightBack.setPower(pos4 / 10);
+                wait(5);
 
-            runtime.reset();
+                runtime.reset();
+            }
         }
-    }
-
-    public void shoot() {
-        while (runtime.seconds() <= 6) {
-            shooter1.setPower(pos / 1.4);
-            shooter2.setPower(pos / 1.4);
-            scooper.setPower(pos);
-        }
-        wait(20);
-        runtime.reset();
     }
 
     public void stopRobot() {
@@ -122,16 +111,13 @@ public class FTCLionsAutonomousOp extends OpMode {
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
-        scooper.setPower(0);
-        shooter1.setPower(0);
-        shooter2.setPower(0);
         wait(1);
     }
 
 
     public void wait(int time) {
         try {
-            Thread.sleep(time * 100);
+            Thread.sleep(time * 100); //10th of a second
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -271,22 +257,13 @@ public class FTCLionsAutonomousOp extends OpMode {
         rightFront = hardwareMap.dcMotor.get("rightFront");
         rightBack = hardwareMap.dcMotor.get("rightBack");
 
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
-
-        scooper = hardwareMap.dcMotor.get("scooper");
-        shooter1 = hardwareMap.dcMotor.get("shooter1");
-        shooter2 = hardwareMap.dcMotor.get("shooter2");
-        shooter2.setDirection(DcMotor.Direction.REVERSE);
-
-        scooper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        shooter1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
 
         holder = hardwareMap.servo.get("holder");
         holder.scaleRange(0, 1);
