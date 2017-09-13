@@ -1,7 +1,0 @@
-#Fri Jan 06 16:23:33 EST 2017
-base.0=/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_ba48f6f3611cc44afc95d7b90e8025bad370ea7e
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ef0b4388cf039190b259ed2e079644349248a3d7/classes.dex
-base.1=/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ef0b4388cf039190b259ed2e079644349248a3d7
-file.0=/Users/horacemann/Desktop/ftc_app-2.35.1/TeamCode/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_ba48f6f3611cc44afc95d7b90e8025bad370ea7e/classes.dex
