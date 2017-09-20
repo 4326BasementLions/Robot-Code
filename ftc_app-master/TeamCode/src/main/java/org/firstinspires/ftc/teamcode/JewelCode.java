@@ -63,6 +63,9 @@ public class ColorSensorTest extends OpMode {
             telemetry.addData("Text:", "isColor Data(4): " + isColor(colorSensor));
             //telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
             telemetry.addData("Colors (R, B, G)", hsvValues[0]);
+            
+        }
+    }
 
 
 
