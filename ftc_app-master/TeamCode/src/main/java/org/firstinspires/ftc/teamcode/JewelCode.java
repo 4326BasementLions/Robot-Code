@@ -27,17 +27,16 @@ public class ColorSensorTest extends OpMode {
     ColorSensor testSense;
     Servo continuousServo;
     String whichColor;
+    
     @Override
-    public void loop{
-        if(DEBUG){
-            telemetry.addData("Text:", "isColor Data(4): " + isColor(colorSensor));
-            //telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
-            telemetry.addData("Colors (R, B, G)", hsvValues[0]);
-        }
+    public void init(){
+        continuousServo.setPosition(0.0);
     }
+   
+    
 
     @Override
-    public void runOpMode{
+    public void loop(){
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F,0F,0F};
 
@@ -56,48 +55,20 @@ public class ColorSensorTest extends OpMode {
 
         telemetry.update();
 
-        continuousServo.setPosition(0.0);
+        
 
         //assuming red team
+        
+        if(DEBUG){
+            telemetry.addData("Text:", "isColor Data(4): " + isColor(colorSensor));
+            //telemetry.addData("Text:", "RGB Colors: " + colorSensor.red() + ", " + colorSensor.green() + ", " + colorSensor.blue());
+            telemetry.addData("Colors (R, B, G)", hsvValues[0]);
 
 
 
 
 
-        @Override
-        public void start() {
-            checkColor();
-            leftFront = hardwareMap.dcMotor.get("leftFront");
-            leftBack = hardwareMap.dcMotor.get("leftBack");
-            rightFront = hardwareMap.dcMotor.get("rightFront");
-            rightBack = hardwareMap.dcMotor.get("rightBack");
-
-            testSense = hardwareMap.colorSensor.get("colorSensor");
-
-            continuousServo = hardwareMap.Servo.get("servo");
-
-            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            leftFront.setDirection(DcMotor.Direction.REVERSE);
-            leftBack.setDirection(DcMotor.Direction.REVERSE);
-
-            continuousServo.setPosition(.5);
-            driveForward(8,8,8,8,2);
-
-            while(whichColor!="red"){
-                //side to side until it finds red
-                driveForward(8,-8,-8,8,2);
-                driveForward(-8,8,8,-8,2);
-            }
-            if (whichColor=="red"){
-                continuousServo.setPosition(1.0);
-            }
-
-
-        }
+        
 
     public void checkColor(){
         if(colorSensor.red>colorSensor.blue){
@@ -132,5 +103,39 @@ public class ColorSensorTest extends OpMode {
     }
 
 }
+        @Override
+        public void start() {
+            checkColor();
+            leftFront = hardwareMap.dcMotor.get("leftFront");
+            leftBack = hardwareMap.dcMotor.get("leftBack");
+            rightFront = hardwareMap.dcMotor.get("rightFront");
+            rightBack = hardwareMap.dcMotor.get("rightBack");
+
+            testSense = hardwareMap.colorSensor.get("colorSensor");
+
+            continuousServo = hardwareMap.Servo.get("servo");
+
+            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            leftFront.setDirection(DcMotor.Direction.REVERSE);
+            leftBack.setDirection(DcMotor.Direction.REVERSE);
+
+            continuousServo.setPosition(.5);
+            driveForward(8,8,8,8,2);
+
+            while(whichColor!="red"){
+                //side to side until it finds red
+                driveForward(8,-8,-8,8,2);
+                driveForward(-8,8,8,-8,2);
+            }
+            if (whichColor=="red"){
+                continuousServo.setPosition(1.0);
+            }
+
+
+        }
 }
 
